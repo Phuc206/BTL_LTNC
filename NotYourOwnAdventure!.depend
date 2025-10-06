@@ -631,7 +631,7 @@
 1758474220 source:d:\c++\ltnc\notyourownadventure--main\notyourownadventure--main\support\vector2d.cpp
 	"Vector2D.h"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\coin.cpp
+1759772244 source:d:\ltnc_btl\notyourownadventure\coin.cpp
 	"Coin.h"
 	<iostream>
 	"Support/AudioManager.h"
@@ -645,7 +645,7 @@
 1758474220 d:\ltnc_btl\notyourownadventure\support\vector2d.h
 	<cmath>
 
-1758474220 d:\ltnc_btl\notyourownadventure\support\audiomanager.h
+1759769903 d:\ltnc_btl\notyourownadventure\support\audiomanager.h
 	<SDL_mixer.h>
 	<map>
 	<string>
@@ -655,14 +655,14 @@
 	<unordered_map>
 	"SDL.h"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\enemies\bat.cpp
+1759771651 source:d:\ltnc_btl\notyourownadventure\enemies\bat.cpp
 	"Bat.h"
 	<iostream>
 
 1758474220 d:\ltnc_btl\notyourownadventure\enemies\bat.h
 	"Unit.h"
 
-1758474220 d:\ltnc_btl\notyourownadventure\enemies\unit.h
+1759771576 d:\ltnc_btl\notyourownadventure\enemies\unit.h
 	<memory>
 	<vector>
 	"SDL.h"
@@ -684,9 +684,9 @@
 	<vector>
 	"Coin.h"
 
-1758474220 d:\ltnc_btl\notyourownadventure\support\timer.h
+1759769984 d:\ltnc_btl\notyourownadventure\support\timer.h
 
-1758474220 d:\ltnc_btl\notyourownadventure\player.h
+1759771219 d:\ltnc_btl\notyourownadventure\player.h
 	"SDL.h"
 	"Support/Vector2D.h"
 	"Support/TextureLoader.h"
@@ -708,13 +708,13 @@
 	"Skills/FireEffect.h"
 	"Skills/IceEffect.h"
 
-1759338600 d:\ltnc_btl\notyourownadventure\hud.h
+1759771289 d:\ltnc_btl\notyourownadventure\hud.h
 	"SDL.h"
 	"Player.h"
 	<vector>
 	<string>
 
-1758474220 d:\ltnc_btl\notyourownadventure\skills\fireeffect.h
+1759771960 d:\ltnc_btl\notyourownadventure\skills\fireeffect.h
 	"SDL.h"
 	"../Support/Vector2D.h"
 	"../Support/TextureLoader.h"
@@ -722,7 +722,7 @@
 	<vector>
 	"../Enemies/Unit.h"
 
-1758474220 d:\ltnc_btl\notyourownadventure\skills\iceeffect.h
+1759770150 d:\ltnc_btl\notyourownadventure\skills\iceeffect.h
 	"SDL.h"
 	"../Support/Vector2D.h"
 	"../Support/TextureLoader.h"
@@ -730,34 +730,34 @@
 	<vector>
 	"../Enemies/Unit.h"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\enemies\boss.cpp
+1759772949 source:d:\ltnc_btl\notyourownadventure\enemies\boss.cpp
 	"Boss.h"
 	<iostream>
 	"../Support/AudioManager.h"
 
-1758474220 d:\ltnc_btl\notyourownadventure\enemies\boss.h
+1759772173 d:\ltnc_btl\notyourownadventure\enemies\boss.h
 	"Unit.h"
 	"Bat.h"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\enemies\orc.cpp
+1759772133 source:d:\ltnc_btl\notyourownadventure\enemies\orc.cpp
 	"Orc.h"
 
 1758474220 d:\ltnc_btl\notyourownadventure\enemies\orc.h
 	"Unit.h"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\enemies\unit.cpp
+1759772447 source:d:\ltnc_btl\notyourownadventure\enemies\unit.cpp
 	"Unit.h"
 	"../Game.h"
 	<iostream>
 	"../Support/AudioManager.h"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\enemies\vampire.cpp
+1759772018 source:d:\ltnc_btl\notyourownadventure\enemies\vampire.cpp
 	"Vampire.h"
 
 1758474220 d:\ltnc_btl\notyourownadventure\enemies\vampire.h
 	"Unit.h"
 
-1759338791 source:d:\ltnc_btl\notyourownadventure\game.cpp
+1759769608 source:d:\ltnc_btl\notyourownadventure\game.cpp
 	"Game.h"
 	<iostream>
 	"HUD.h"
@@ -768,7 +768,7 @@
 	"Support/AudioManager.h"
 	"algorithm"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\hud.cpp
+1759771502 source:d:\ltnc_btl\notyourownadventure\hud.cpp
 	"HUD.h"
 	"SDL_ttf.h"
 	<iostream>
@@ -792,15 +792,15 @@
 	"iostream"
 	"Support/AudioManager.h"
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\skills\fireeffect.cpp
+1759772064 source:d:\ltnc_btl\notyourownadventure\skills\fireeffect.cpp
 	"FireEffect.h"
 	<iostream>
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\skills\iceeffect.cpp
+1759770849 source:d:\ltnc_btl\notyourownadventure\skills\iceeffect.cpp
 	"IceEffect.h"
 	<iostream>
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\support\audiomanager.cpp
+1759769843 source:d:\ltnc_btl\notyourownadventure\support\audiomanager.cpp
 	"AudioManager.h"
 	<iostream>
 

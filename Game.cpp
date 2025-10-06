@@ -70,7 +70,7 @@ void Game::processEvents(SDL_Renderer* renderer, bool& running) {
         }
 
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
-    if (keyState[SDL_SCANCODE_1]) {
+    if (keyState[SDL_SCANCODE_Q]) {
         if (hud->skills[0].ready()) { // Kiểm tra kỹ năng lửa sẵn sàng
         AudioManager::playSound("Data/Sound/fire.wav");
         Mix_VolumeChunk(AudioManager::getSound("Data/Sound/fire.wav"), 50); // 32 là âm lượng nhỏ
@@ -85,7 +85,7 @@ void Game::processEvents(SDL_Renderer* renderer, bool& running) {
         }
 
     }
-    if (keyState[SDL_SCANCODE_2]) {
+    if (keyState[SDL_SCANCODE_E]) {
         if (hud->skills[1].ready()) { // Kỹ năng băng là skill thứ 2
             AudioManager::playSound("Data/Sound/ice.wav");
             Mix_VolumeChunk(AudioManager::getSound("Data/Sound/ice.wav"), 50); // 32 là âm lượng nhỏ
@@ -100,9 +100,6 @@ void Game::processEvents(SDL_Renderer* renderer, bool& running) {
     player->handleInput(keyState, renderer);
 }
 }
-
-
-
 
 
 
@@ -707,7 +704,7 @@ void Game::showVictoryMenu(SDL_Renderer* renderer) {
             }
         }
 
-        // Vẽ lại khung cảnh gameplay làm nền
+        // Ve lai khung cảnh gameplay làm nền
         level.draw(renderer, tileSize, cameraPos.x, cameraPos.y);
         for (auto& unitSelected : listUnits)
             if (unitSelected != nullptr)

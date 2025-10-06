@@ -46,7 +46,7 @@ public:
    void setFrozen(bool value) { frozen = value; }
 protected:
     	Vector2D pos;
-        UnitState state = UnitState::Run; // Mặc định là chạy
+        UnitState state = UnitState::Run; // Mac dinh là chay
         bool isdead = false;
         Timer timerJustHurt = Timer(0.2f);
 
@@ -69,7 +69,7 @@ private:
     float frameTimer = 0.0f;
 
 
-    Timer damageCooldown = Timer(1.0f); // 1 giây giữa mỗi lần gây sát thương
+    Timer damageCooldown = Timer(1.0f); // 1 giây giua moi lan gây sát thuong
 
     float hurtTimer = 0.0f;
 
@@ -89,11 +89,11 @@ protected:
     float speed;
     float health, maxHealth;
 
-    float attackDamage;  // ⚔️ Sát thương của Unit
-    float attackRange;   // 📏 Khoảng cách tấn công
+    float attackDamage;  // Sát thuong cua Unit
+    float attackRange;   // Khoang cách tan công
 
 protected:
-    Direction direction = FRONT; // Mặc định hướng xuống
+    Direction direction = FRONT; // Mac dinh huong xuong
     int currentFrame = 0;
     int rowIndex = 0;  // Hàng trong sprite sheet (0: Front, 1: Back, 2: Left, 3: Right)
 

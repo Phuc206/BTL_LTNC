@@ -173,7 +173,6 @@ Level::TileType Level::getTileType(int x, int y) {
     return TileType::empty;
 }
 
-
 void Level::setTileType(int x, int y, TileType tileType) {
     int index = x + y * tileCountX;
     if (index > -1 && index < listTiles.size() &&

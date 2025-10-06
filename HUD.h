@@ -45,10 +45,10 @@ private:
     int enemyCount = 0;
     bool isMuted = false;
 
-    // Thanh trượt âm lượng (đặt trong khung HUD)
+    // Thanh truot âm luong (dat trong khung HUD)
     SDL_Rect speakerButton = { 780, 60, 50, 30};
     SDL_Rect pauseButton = { 850, 10, 50, 30 }; // Nút Pause o góc phai trên
-    SDL_Rect quitButton = { 910, 10, 50, 30 }; // Nút Quit bên cạnh
+    SDL_Rect quitButton = { 910, 10, 50, 30 }; // Nút Quit bên canh
     SDL_Texture* pauseTexture = nullptr;
     SDL_Texture* pauseHoverTexture = nullptr;
     SDL_Texture* quitTexture = nullptr;
@@ -56,7 +56,7 @@ private:
     SDL_Texture* speakerTexture = nullptr;
     SDL_Texture* silentTexture = nullptr;
 
-    int volume = 30; // Giá trị âm lượng (0-128)
+    int volume = 30; // Giá tri am luong (0-128)
 
     void drawHealthBar(SDL_Renderer* renderer, int x, int y, int width, int height);
     void drawManaBar(SDL_Renderer* renderer, int x, int y, int width, int height);

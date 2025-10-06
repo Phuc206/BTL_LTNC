@@ -17,45 +17,45 @@ void IceEffect::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits) 
     durationTimer.countDown(dT);
     freezeTimer.countDown(dT);
 
-    // Cập nhật animation
+    // Cap nhat animation
     frameTimer += dT;
     if (frameTimer >= frameTime) {
         frameTimer = 0.0f;
         frame = (frame + 1) % frameCount;
     }
 
-    // Chuyển trạng thái
+    // Chuyen trang thai
     if (durationTimer.timeSIsZero()) {
         if (state == IceState::Appear) {
             state = IceState::Active;
-            durationTimer = Timer(4.0f); // Reset cho trạng thái Active
+            durationTimer = Timer(4.0f); // Reset cho trang thái Active
             durationTimer.resetToMax();
         } else if (state == IceState::Active) {
             state = IceState::Disappear;
-            durationTimer = Timer(0.5f); // Reset cho trạng thái Disappear
+            durationTimer = Timer(0.5f); // Reset cho trang thai Disappear
             durationTimer.resetToMax();
         }
     }
 
-    // Đóng băng quái trong trạng thái Active
+    // Dong bang quai trong trang thai Active
     if (state == IceState::Active && !freezeTimer.timeSIsZero()) {
         for (auto& unit : listUnits) {
-            if (unit && unit->isAlive() && !unit->isFrozen()) { // Chỉ đóng băng nếu chưa bị đóng
+            if (unit && unit->isAlive() && !unit->isFrozen()) { // Chi dong bang neu chua bi dong
                 float distance = (unit->getPos() - pos).magnitude();
                 if (distance <= radius) {
-                    unit->setFrozen(true); // Đóng băng quái
+                    unit->setFrozen(true); // Dong bang quai
                     unit->takeDamage(5, nullptr);
-                    frozenUnits.push_back(unit); // Thêm vào danh sách
+                    frozenUnits.push_back(unit); // Them vao danh sach
                 }
             }
         }
     }
 
 
-    // Giải phóng quái khi hết thời gian đóng băng
+    // Giai phong quai khi het thoi gian dong bang
     if (freezeTimer.timeSIsZero() && !frozenUnits.empty()) {
         for (auto& unit : frozenUnits) {
-            if (unit) unit->setFrozen(false); // Giải phóng quái
+            if (unit) unit->setFrozen(false); // Giai phong quai
         }
         frozenUnits.clear();
     }
@@ -78,7 +78,7 @@ void IceEffect::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
     SDL_Rect destRect = {
         (int)(pos.x * tileSize) - frameWidth / 2 - (int)(cameraPos.x * tileSize),
         (int)(pos.y * tileSize) - frameHeight / 2 - (int)(cameraPos.y * tileSize),
-        frameWidth * 4, frameHeight * 4 // Phóng to gấp đôi (160x96px)
+        frameWidth * 4, frameHeight * 4 // Phong to gap doi (160x96px)
     };
 
     SDL_RenderCopy(renderer, currentTexture, &srcRect, &destRect);

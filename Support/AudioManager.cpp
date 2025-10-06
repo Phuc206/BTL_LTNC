@@ -14,7 +14,7 @@ void AudioManager::init() {
         std::cout << "✅ SDL_mixer format initialized.\n";
     }
 
-    // Đảm bảo mở thiết bị âm thanh trước khi load âm thanh
+    // Dam bao mo thiet bi am thanh truoc khi load am thanh
     if (Mix_OpenAudio(48000, MIX_DEFAULT_FORMAT, 2, 4096) == -1) {
         std::cout << "❌ SDL_mixer audio error: " << Mix_GetError() << std::endl;
     } else {
@@ -34,20 +34,20 @@ void AudioManager::close() {
 }
 
 void AudioManager::playMusic(const std::string& path, int loop) {
-    // Giải phóng nhạc cũ nếu có
+    // Giai phong nhac cu neu có
     if (backgroundMusic != nullptr) {
         Mix_FreeMusic(backgroundMusic);
         backgroundMusic = nullptr;
     }
 
-    // Sử dụng Mix_LoadMUS thay vì Mix_LoadWAV
+    // Su dung Mix_LoadMUS thay vì Mix_LoadWAV
     backgroundMusic = Mix_LoadMUS(path.c_str());
     if (!backgroundMusic) {
         std::cout << "❌ Mix_LoadMUS Error: " << Mix_GetError() << std::endl;
         return;
     }
 
-    // Phát nhạc nền với chế độ loop
+    // Phat nhac nen voi che do loop
     if (Mix_PlayMusic(backgroundMusic, loop) == -1) {
         std::cout << "❌ Mix_PlayMusic Error: " << Mix_GetError() << std::endl;
     } else {

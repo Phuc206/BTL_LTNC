@@ -7,10 +7,10 @@ Orc::Orc(SDL_Renderer* renderer, Vector2D setPos)
     textureHurt = TextureLoader::loadTexture(renderer, "orc2_hurt_full.png");
     textureDeath = TextureLoader::loadTexture(renderer, "orc2_death_full.png");
 
-    this->speed = 1.2f;      // 🔥 Tăng tốc độ từ 0.7 → 1.5 (Chạy nhanh hơn)
-    this->health = 70;      // 🛡️ Tăng máu từ 5 → 300 (Trâu hơn)
+    this->speed = 1.2f;      // Tang toc do tu 0.7 -> 1.5 (Chay nhanh hon)
+    this->health = 70;      // Tang mau tu 5 -> 300 (Trau hon)
     this->maxHealth = 70;
-    this->attackDamage = 15; // ⚔️ Tăng damage từ 5 → 15 (Mạnh hơn)
-    this->attackRange = 0.7f; // 📏 Giữ khoảng cách tấn công
+    this->attackDamage = 15; // Tang damage tu 5 -> 15 (Manh hon)
+    this->attackRange = 0.7f; // Giu khoang cach tan cong
 }
 

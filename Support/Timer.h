@@ -15,9 +15,9 @@ public:
     bool timeSIsZero();
     bool timeSIsGreaterThanOrEqualTo(float timeSCheck);
 
-    // Thêm các phương thức mới
-    void reset(float time) { timeSMax = time; timeSCurrent = time; } // Đặt lại thời gian tối đa và hiện tại
-    float getTimeSCurrent() { return timeSCurrent; } // Thêm getter để debug
+    // Them cac phuong thuc moi
+    void reset(float time) { timeSMax = time; timeSCurrent = time; } // Dat lai thoi gian toi da va hien tai
+    float getTimeSCurrent() { return timeSCurrent; } // Them getter de debug
 };
 
 #endif

@@ -14,7 +14,7 @@ void Coin::update(float deltaTime) {
 
     if (collected) return;
 
-    // Xử lý animation
+    // Xu lý animation
     frameTimer += deltaTime;
     if (frameTimer >= frameTime) {
         frameTimer = 0.0f;
@@ -25,12 +25,12 @@ void Coin::update(float deltaTime) {
 void Coin::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
     if (collected) return;
 
-    int frameWidth = 128;  // Mỗi frame rộng 128px
-    int frameHeight = 128; // Mỗi frame cao 128px
+    int frameWidth = 128;  // Moi frame rong 128px
+    int frameHeight = 128; // Moi frame cao 128px
 
     SDL_Rect srcRect = { frame * frameWidth, 0, frameWidth, frameHeight };
 
-    int drawSize = 16;  // Coin sẽ hiển thị với kích thước 32x32 trên màn hình
+    int drawSize = 16;  // Coin se hien thi voi kích thuoc 32x32 trên màn hình
     SDL_Rect destRect = {
         (int)(pos.x * tileSize) - drawSize / 2 - (int)(cameraPos.x * tileSize),
         (int)(pos.y * tileSize) - drawSize / 2 - (int)(cameraPos.y * tileSize),

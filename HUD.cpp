@@ -35,7 +35,7 @@ void HUD::update(float dT, const std::vector<std::shared_ptr<Unit>>& units) {
         skill.update(dT);
     }
 
-    // Cập nhật thời gian sống sót
+    // Cap nhat thoi gian song sót
     if (!player->isDead) {
         survivalTime += dT;
     }
@@ -44,7 +44,7 @@ void HUD::update(float dT, const std::vector<std::shared_ptr<Unit>>& units) {
     }
 
 
-    // Đếm số kẻ thù còn lại
+    // Dem so ke thu con lai
     enemyCount = 0;
     for (const auto& unit : units) {
         if (unit && unit->isAlive()) {
@@ -75,7 +75,7 @@ void HUD::draw(SDL_Renderer* renderer) {
 
 
 
-    // Vẽ nút Pause và Quit
+    // Ve nút Pause và Quit
     int mouseX, mouseY;
     SDL_GetMouseState(&mouseX, &mouseY);
     bool isHoverPause = (mouseX >= pauseButton.x && mouseX <= pauseButton.x + pauseButton.w &&
@@ -110,17 +110,17 @@ void HUD::drawHealthBar(SDL_Renderer* renderer, int x, int y, int width, int hei
     SDL_Rect bg = { x, y, width, height };
     SDL_Rect bar = { x, y, (width * player->getCurrentHP()) / player->getMaxHP(), height };
 
-    // Viền
+    // Vien
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &bg);
 
-    // Nền
+    // Nen
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
     SDL_RenderFillRect(renderer, &bg);
 
-    // Thanh máu (nhấp nháy nếu dưới 25%)
+    // Thanh máu (nhap nháy neu duoi 25%)
     if (player->getCurrentHP() < player->getMaxHP() * 0.25f && SDL_GetTicks() % 500 < 250) {
-        SDL_SetRenderDrawColor(renderer, 255, 100, 100, 255); // Nhấp nháy đỏ nhạt
+        SDL_SetRenderDrawColor(renderer, 255, 100, 100, 255); // Nhap nháy do nhat
     } else {
         SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     }
@@ -131,11 +131,11 @@ void HUD::drawManaBar(SDL_Renderer* renderer, int x, int y, int width, int heigh
     SDL_Rect bg = { x, y, width, height };
     SDL_Rect bar = { x, y, (width * player->getCurrentMP()) / player->getMaxMP(), height };
 
-    // Viền
+    // Vien
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &bg);
 
-    // Nền
+    // Nen
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
     SDL_RenderFillRect(renderer, &bg);
 
@@ -186,19 +186,19 @@ bool HUD::handleInput(SDL_Event& event, Game* game) {
         case SDL_MOUSEBUTTONDOWN:
         int mouseX = event.button.x;
         int mouseY = event.button.y;
-            // Xử lý nút Pause
+            // Xu lý nút Pause
                if (mouseX >= pauseButton.x && mouseX <= pauseButton.x + pauseButton.w &&
                          mouseY >= pauseButton.y && mouseY <= pauseButton.y + pauseButton.h) {
                     AudioManager::playSound("Data/Sound/Wood Block1.mp3");
-                    game->setState(GameState::Paused); // Chuyển sang trạng thái Paused
+                    game->setState(GameState::Paused); // Chuyen sang trang thái Paused
                     return true;
                 }
-                // Xử lý nút Quit
+                // Xu lý nút Quit
                 else if (mouseX >= quitButton.x && mouseX <= quitButton.x + quitButton.w &&
                          mouseY >= quitButton.y && mouseY <= quitButton.y + quitButton.h) {
                     AudioManager::playSound("Data/Sound/Wood Block1.mp3");
                     game->restartGame();
-                    game->setState(GameState::Menu); // Chuyển sang trạng thái Quit
+                    game->setState(GameState::Menu); // Chuyen sang trang thái Quit
 
                     return true;
                 }

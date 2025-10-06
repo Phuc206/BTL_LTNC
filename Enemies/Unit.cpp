@@ -25,7 +25,7 @@ void Unit::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
 
         if (frameTimer >= frameTime) {
             frameTimer = 0.0f;
-            if (frame < getFrameCount() - 1) frame++; // Không lặp lại khi hết frame
+            if (frame < getFrameCount() - 1) frame++; // Khong lap lai khi het frame
         }
 
         if (timerDeath.timeSIsZero()) {
@@ -42,7 +42,7 @@ void Unit::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
     frameTimer += dT;
     if (frameTimer >= frameTime) {
         frameTimer = 0.0f;
-        if (state != UnitState::Hurt || frame < getFrameCount() - 1) frame++; // Không lặp Hurt
+        if (state != UnitState::Hurt || frame < getFrameCount() - 1) frame++; // Khong lap Hurt
         if (frame >= getFrameCount()) frame = 0;
     }
 
@@ -55,31 +55,31 @@ void Unit::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
     Vector2D dirVector = playerPos - pos;
     float length = dirVector.magnitude();
 
-    // 🟢 Điều chỉnh trạng thái theo khoảng cách
+    // Dieu chinh trang thai theo khoang cach
     if (length > attackRange) {
         setState(UnitState::Run);
     } else {
         setState(UnitState::Attack);
     }
 
-    // 🚫 **Chống đè lên nhau**
+    // Chong de len nhau
     for (auto& otherUnit : listUnits) {
-        if (otherUnit.get() == this) continue; // Bỏ qua chính nó
+        if (otherUnit.get() == this) continue; // Bo qua chinh no
 
         Vector2D otherPos = otherUnit->getPos();
         Vector2D distanceVec = pos - otherPos;
         float distance = distanceVec.magnitude();
 
-        float minDistance = 0.5f; // Khoảng cách tối thiểu giữa các quái
+        float minDistance = 0.5f; // Khoang cach toi thieu giua cac quai
 
-        // Nếu quái quá gần nhau, đẩy chúng tách ra
+        // Neu quai qua gan nhau, day chung tach ra
         if (distance < minDistance) {
             Vector2D pushAway = distanceVec.normalize() * (minDistance - distance);
-            pos = pos + pushAway * dT; // Đẩy nhẹ quái ra
+            pos = pos + pushAway * dT; // Day nhe quai ra
         }
     }
 
-    // 🏃 Di chuyển quái
+    // Di chuyen quai
     if (state == UnitState::Run) {
         if (length > 0) {
             dirVector.normalize();
@@ -87,7 +87,7 @@ void Unit::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
         }
     }
 
-    // 🏃 Cập nhật hướng
+    // Cap nhat huong
     if (state == UnitState::Run || state == UnitState::Attack) {
         if (length > 0) {
             dirVector.normalize();
@@ -105,7 +105,7 @@ void Unit::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
         }
     }
 
-    // 🗡 Tấn công người chơi
+    // Tan cong nguoi choi
     if (length < attackRange && damageCooldown.timeSIsZero()) {
         AudioManager::playSound("Data/Sound/monster_attack.mp3");
         Mix_VolumeChunk(AudioManager::getSound("Data/Sound/monster_attack.mp3"), 50);
@@ -122,17 +122,17 @@ void Unit::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
     SDL_Texture* currentTexture = getTextureForState();
     if (!currentTexture) return;
 
-    int columns = 8; // Mặc định 8 cột
+    int columns = 8; // Mac dinh 8 cot
 
-    // 🟢 Tự động tính toán số cột dựa trên trạng thái Hurt
+    // Tu dong tinh toan so cot dua tren trang thai Hurt
     if (state == UnitState::Hurt) {
-        int hurtFrameCount = getFrameCount(); // Lấy số frame của Hurt
+        int hurtFrameCount = getFrameCount(); // Lay so frame cua Hurt
 
-        // 🟢 Nếu là trạng thái Hurt thì tự động xác định số cột
+        // Neu la trang thai Hurt thi tu dong xac dinh so cot
         if (hurtFrameCount % 6 == 0) {
-            columns = 6; // Nếu chia hết cho 6 -> Orc
+            columns = 6; // Neu chia het cho 6 -> Orc
         } else if (hurtFrameCount % 4 == 0) {
-            columns = 4; // Nếu chia hết cho 4 -> Vampire
+            columns = 4; // Neu chia het cho 4 -> Vampire
         }
     }
 
@@ -142,7 +142,7 @@ void Unit::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
     int row = frame / columns;
     int column = frame % columns;
 
-    // 🛠 Kiểm tra frame hợp lệ
+    // Kiem tra frame hop le
     if (row * columns + column >= totalFrames) {
         frame = 0;
         row = 0;
@@ -171,11 +171,11 @@ bool Unit::isDead() { return isdead; }
 Vector2D Unit::getPos() { return pos; }
 
 void Unit::takeDamage(int damage, Game* game) {
-    if (state == UnitState::Death) return; // Không nhận sát thương khi đã chết
+    if (state == UnitState::Death) return; // Khong nhan sat thuong khi da chet
 
     health -= damage;
     if (health <= 0) {
-        if (state != UnitState::Death) { // Chỉ chuyển sang Death nếu chưa ở trạng thái này
+        if (state != UnitState::Death) { // Chi chuyen sang Death neu chua o trang thai nay
             AudioManager::playSound("Data/Sound/monster_die.mp3");
             Mix_VolumeChunk(AudioManager::getSound("Data/Sound/monster_die.mp3"), 50);
             setState(UnitState::Death);
@@ -193,7 +193,7 @@ void Unit::takeDamage(int damage, Game* game) {
                 }
             }
         }
-    } else if (state != UnitState::Hurt) { // Chỉ chuyển sang Hurt nếu chưa ở trạng thái này
+    } else if (state != UnitState::Hurt) { // Chi chuyen sang Hurt neu chua o trang thai nay
         setState(UnitState::Hurt);
         timerJustHurt.resetToMax();
         frame = 0;
@@ -204,15 +204,15 @@ void Unit::takeDamage(int damage, Game* game) {
 
 
 void Unit::setState(UnitState newState) {
-    if (state == newState) return; // 🔥 Tránh reset frame nếu đang cùng trạng thái
+    if (state == newState) return; // Tranh reset frame neu dang cung trang thai
 
     state = newState;
-    frame = 0; // Reset lại frame khi đổi trạng thái
+    frame = 0; // Reset lai frame khi doi trang thai
 
     switch (state) {
         case UnitState::Run: frameTime = 0.15f; break;
         case UnitState::Attack: frameTime = 0.1f; break;
-        case UnitState::Hurt: frameTime = 0.2f; break; // 🛠 Điều chỉnh thời gian frame Hurt
+        case UnitState::Hurt: frameTime = 0.2f; break; // Dieu chinh thoi gian frame Hurt
         case UnitState::Death: frameTime = 0.2f; break;
         default: frameTime = 0.15f; break;
     }
@@ -239,5 +239,3 @@ int Unit::getFrameCount() {
         default: return 8;
     }
 }
-
-

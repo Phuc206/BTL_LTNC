@@ -8,25 +8,25 @@ Bat::Bat(SDL_Renderer* renderer, Vector2D setPos)
     textureHurt = TextureLoader::loadTexture(renderer, "Bat-Hurt.png");
     textureDeath = TextureLoader::loadTexture(renderer, "Bat-Die.png");
 
-    // Kiểm tra texture
+    // Kiem tra texture
     if (!textureRun) std::cerr << "Error: Failed to load Bat-Run.png" << std::endl;
     if (!textureAttack) std::cerr << "Error: Failed to load Bat-Attack1.png" << std::endl;
     if (!textureHurt) std::cerr << "Error: Failed to load Bat-Hurt.png" << std::endl;
     if (!textureDeath) std::cerr << "Error: Failed to load Bat-Die.png" << std::endl;
 
-    // Thiết lập thông số
+    // Thiet lap thông so
     this->speed = 2.0f;
     this->health = 30;
     this->maxHealth = 30;
     this->attackDamage = 20;
     this->attackRange = 0.7f;
 
-    // Đảm bảo trạng thái ban đầu
+    // Dam bao trang thái ban dau
     state = UnitState::Run;
 
-    // Thiết lập frameWidth và frameHeight cho Bat
-    frameWidth = 64;  // Mỗi frame 64 pixel
-    frameHeight = 64; // Mỗi frame 64 pixel
+    // Thiet lap frameWidth và frameHeight cho Bat
+    frameWidth = 64;  // Moi frame 64 pixel
+    frameHeight = 64; // Moi frame 64 pixel
 }
 
 void Bat::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
@@ -49,7 +49,7 @@ void Bat::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
 
     int totalFrames = getFrameCount();
     if (frame >= totalFrames || frame < 0) {
-        frame = 0; // Reset frame nếu vượt giới hạn
+        frame = 0; // Reset frame neu vuot gioi han
     }
 
     int column = frame % columns;

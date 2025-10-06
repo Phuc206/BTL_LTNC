@@ -17,15 +17,15 @@ public:
 private:
     Vector2D pos;
     SDL_Texture* textureFire = nullptr;
-    Timer durationTimer = Timer(4.0f) ; // Tồn tại 1 giây
-    float frameTime = 0.1f; // Mỗi frame 0.1 giây
+    Timer durationTimer = Timer(4.0f) ; // Ton tai 1 giây
+    float frameTime = 0.1f; // Moi frame 0.1 giây
     float frameTimer = 0.0f;
     int frame = 0;
     int frameCount = 6; // 6 frame trong sprite sheet
-    int frameWidth = 480/6; // Giả sử sprite sheet rộng 192px, chia 6 = 32px mỗi frame
-    int frameHeight = 48; // Chiều cao sprite (có thể điều chỉnh)
+    int frameWidth = 480/6; // Gia su sprite sheet rong 192px, chia 6 = 32px moi frame
+    int frameHeight = 48; // Chieu cao sprite (co the dieu chinh)
 
-    float damage = 10.0f; // Sát thương gây ra
-    float radius = 2.0f; // Phạm vi vùng lửa
-    Timer damageCooldown = Timer(1.0f); // Gây sát thương mỗi 0.5 giây
+    float damage = 10.0f; // Sát thuong gây ra
+    float radius = 2.0f; // Pham vi vùng lua
+    Timer damageCooldown = Timer(1.0f); // Gây sát thuong moi 0.5 giây
 };

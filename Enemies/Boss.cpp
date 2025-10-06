@@ -46,7 +46,7 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
     animationTimer += dT;
     summonTimer += dT;
 
-    // Xử lý trạng thái Spawning
+    // Xu ly trang thai Spawning
     if (isSpawning) {
         spawnTimer -= dT;
         if (animationTimer >= frameTimeBoss && currentFrame < spawnFrames.size() - 1) {
@@ -62,7 +62,7 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
         return;
     }
 
-    // Xử lý trạng thái Hurt
+    // Xu ly trang thai Hurt
     if (state == UnitState::Hurt) {
         hurtTimer -= dT;
         if (animationTimer >= frameTimeBoss && currentFrame < hurtFrames.size() - 1) {
@@ -70,14 +70,14 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
             currentFrame++;
         }
         if (hurtTimer <= 0.0f) {
-            state = previousState; // Quay lại trạng thái trước đó
+            state = previousState; // Quay lai trang thai truoc do
             currentFrame = 0;
             animationTimer = 0.0f;
         }
         return;
     }
 
-    // Xử lý các trạng thái khác (Idle, Death, Attack, Run)
+    // Xu ly cac trang thai khac (Idle, Death, Attack, Run)
     if (summonTimer >= 5.0f && state != UnitState::Death) {
         AudioManager::playSound("Data/Sound/boss_roar.mp3");
         Mix_VolumeChunk(AudioManager::getSound("Data/Sound/boss_roar.mp3"), 50);
@@ -107,13 +107,13 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
     }
 
     if (state == UnitState::Death) {
-        if (!hurtAnimationFinished) { // Chỉ cập nhật nếu animation chưa xong
+        if (!hurtAnimationFinished) { // Chi cap nhat neu animation chua xong
             if (animationTimer >= frameTimeBoss && currentFrame < deathFrames.size() - 1) {
                 animationTimer = 0.0f;
                 currentFrame++;
             } else if (currentFrame >= deathFrames.size() - 1) {
-                hurtAnimationFinished = true; // Đánh dấu animation đã hoàn tất
-                isdead = true; // Boss chính thức chết
+                hurtAnimationFinished = true; // Danh dau animation da hoan tat
+                isdead = true; // Boss chinh thuc chet
             }
         }
         return;
@@ -154,6 +154,7 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
         state = UnitState::Attack;
     }
 }
+
 void Boss::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
     if (!renderer || isDead()) return;
 
@@ -187,15 +188,16 @@ void Boss::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
         drawHealthBar(renderer, tileSize, cameraPos);
     }
 }
+
 void Boss::summonMinions(SDL_Renderer* renderer, Level& level, std::vector<std::shared_ptr<Unit>>& listUnits) {
     if (!isSummoning || !renderer) return;
 
     int numMinions = 3;
-    float summonRadius = 2.0f; // 2 đơn vị lưới logic
+    float summonRadius = 2.0f; // 2 don vi luoi logic
 
     for (int i = 0; i < numMinions; ++i) {
-        float offsetX = (rand() % 200) / 100.0f - 1.0f; // -1.0 đến 1.0
-        float offsetY = (rand() % 200) / 100.0f - 1.0f; // -1.0 đến 1.0
+        float offsetX = (rand() % 200) / 100.0f - 1.0f; // -1.0 den 1.0
+        float offsetY = (rand() % 200) / 100.0f - 1.0f; // -1.0 den 1.0
         Vector2D summonPos = pos + Vector2D(offsetX * summonRadius, offsetY * summonRadius);
         summonPos.x = std::max(0.5f, std::min(summonPos.x, (float)level.GetX() - 0.5f));
         summonPos.y = std::max(0.5f, std::min(summonPos.y, (float)level.GetY() - 0.5f));
@@ -205,44 +207,51 @@ void Boss::summonMinions(SDL_Renderer* renderer, Level& level, std::vector<std::
 }
 
 void Boss::drawHealthBar(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
-    const int barWidth = 200;  // Chiều rộng thanh máu (pixel)
-    const int barHeight = 5;  // Chiều cao thanh máu
+    const int barWidth = 200;  // Chieu rong thanh mau (pixel)
+    const int barHeight = 5;  // Chieu cao thanh máu
 
-    // Tính vị trí thanh máu dựa trên vị trí boss
+    // Tinh vi tri thanh mau dua tren vi tri boss
     int barX = ((int)(pos.x * tileSize) - barWidth / 2 - (int)(cameraPos.x * tileSize)) + 60;
-    int barY = (int)(pos.y * tileSize) - frameHeight / 2 - (int)(cameraPos.y * tileSize) ;
+    int barY = (int)(pos.y * tileSize) - frameHeight / 2 - (int)(cameraPos.y * tileSize);
 
     SDL_Rect bg = { barX, barY, barWidth, barHeight };
     SDL_Rect bar = { barX, barY, (int)(barWidth * health / maxHealth), barHeight };
 
-    // Vẽ viền
+    // Ve vien
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &bg);
 
-    // Vẽ nền
+    // Ve nen
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
     SDL_RenderFillRect(renderer, &bg);
 
-    // Vẽ thanh máu
+    // Ve thanh mau
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &bar);
 }
 
 void Boss::takeDamage(int damage, Game* game) {
-    if (state == UnitState::Death || isSpawning) return; // Không nhận sát thương khi chết hoặc đang spawn
+    if (state == UnitState::Death || isSpawning) return; // Khong nhan sat thuong khi chet hoac dang spawn
 
     health -= damage;
 
     if (health > 0 && state != UnitState::Hurt) {
-        previousState = state; // Lưu trạng thái trước đó
+        previousState = state; // Luu trang thai truoc do
         state = UnitState::Hurt;
-        hurtTimer = hurtDuration; // Đặt thời gian bị thương
-        currentFrame = 0; // Bắt đầu animation Hurt từ frame 0
+        hurtTimer = hurtDuration; // Dat thoi gian bi thuong
+        currentFrame = 0; // Bat dau animation Hurt tu frame 0
         animationTimer = 0.0f;
-        AudioManager::playSound("Data/Sound/boss_hurt.mp3"); // Thêm âm thanh nếu có
+        AudioManager::playSound("Data/Sound/boss_hurt.mp3"); // Them am thanh neu co
     } else if (health <= 0) {
         state = UnitState::Death;
         currentFrame = 0;
         animationTimer = 0.0f;
     }
 }
+
+
+
+
+
+
+

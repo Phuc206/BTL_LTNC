@@ -8,7 +8,7 @@
 #include "Support/AudioManager.h"
 
 class Unit;
-class Game;  // Khai báo trước để tránh lỗi
+class Game;  // Khai bao truoc de tranh loi
 class Level;
 
 
@@ -20,7 +20,7 @@ enum class PlayerState {
     Attack1,
     RunRight,
     Attack1Left,
-     Hurt,  // 🔴 Thêm trạng thái bị đánh
+    Hurt,  // Them trang thai bi danh
     Death,
 
 };
@@ -28,7 +28,7 @@ enum class PlayerState {
 class Player
 {
 public:
-    ~Player();  // Destructor để giải phóng texture
+    ~Player();  // Destructor de giai phong texture
 
     Player(Game* gamePtr, SDL_Renderer* renderer, Vector2D startPos);
     void handleInput(const Uint8* keyState, SDL_Renderer* renderer);
@@ -59,7 +59,7 @@ public:
     Timer deathTimer = Timer(2.0f);
 
     int frame = 0;
-    int frameCount = 8; // 8 frame mỗi animation
+    int frameCount = 8; // 8 frame moi animation
     float frameTime = 1.0f / 15.0f;
     float frameTimer = 0.0f;
     int level = 1;
@@ -83,7 +83,7 @@ private:
 
 
 
-    Timer shootCooldown = Timer(0.7f); // Khoảng cách giữa các lần bắn
+    Timer shootCooldown = Timer(0.7f); // Khoang cach giua cac lan ban
 
 
 
@@ -91,19 +91,19 @@ private:
 
 
 private:
-    PlayerState state = PlayerState::IdleRight; // Mặc định là đứng yên
-    int spriteWidth = 2000;  // Kích thước toàn bộ spritesheet
+    PlayerState state = PlayerState::IdleRight; // Mac dinh la dung yen
+    int spriteWidth = 2000;  // Kich thuoc toan bo spritesheet
     int spriteHeight = 250;
-    int frameWidth = spriteWidth / 8;  // Kích thước của một frame = 2000/8 = 250px
+    int frameWidth = spriteWidth / 8;  // Kich thuoc cua mot frame = 2000/8 = 250px
     int frameHeight = spriteHeight;
     int lastDirection;
 
-    Vector2D smoothPos; // Vị trí nội suy
+    Vector2D smoothPos; // Vi tri noi suy
 
-    bool isAttacking = false;  // Kiểm soát khi nào player đang tấn công
+    bool isAttacking = false;  // Kiem soat khi nao player dang tan cong
 
 
-    float attackRange = 1.5f;  // Phạm vi đánh cận chiến
+    float attackRange = 1.5f;  // Pham vi danh can chien
 
 
     Game* game;
@@ -115,10 +115,10 @@ private:
     int coin = 0;
 
 
-    Timer damageCooldown = Timer(0.7f); // 1 giây giữa mỗi lần nhận damage
+    Timer damageCooldown = Timer(0.7f); // 1 giay giua moi lan nhan damage
 
 
-    Timer hurtTimer { 0.5f, 0.0f }; //  Nhấp nháy 0.5 giây khi bị đánh
+    Timer hurtTimer { 0.5f, 0.0f }; //  Nhap nhay 0.5 giay khi bi danh
 
 
     PlayerState prevStateBeforeHurt;

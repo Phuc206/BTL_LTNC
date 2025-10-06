@@ -8,11 +8,11 @@
 
 class AudioManager {
 public:
-    static void init();               // Khởi tạo âm thanh
-    static void close();              // Giải phóng tài nguyên
-    static void playMusic(const std::string& file, int loops = -1);  // Phát nhạc nền
-    static void playSound(const std::string& file);                  // Phát hiệu ứng
-    static void setVolume(int volume);  // Điều chỉnh âm lượng
+    static void init();               // Khoi tao am thanh
+    static void close();              // Giai phong tai nguyen
+    static void playMusic(const std::string& file, int loops = -1);  // Phat nhac nen
+    static void playSound(const std::string& file);                  // Phat hieu ung
+    static void setVolume(int volume);  // Dieu chinh am luong
     static Mix_Chunk* getSound(const std::string& path);
 
 private:
