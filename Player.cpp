@@ -40,7 +40,7 @@ void Player::handleInput(const Uint8* keyState, SDL_Renderer* renderer) {
     AudioManager::init();
     if (state == PlayerState::Death) return;
 
-    if (!isAttacking) {  // Không nhận input di chuyển khi đang tấn công
+    if (!isAttacking) {  // Không nhan input di chuyen khi dang tan công
         direction = Vector2D(0, 0);
         bool up    = keyState[SDL_SCANCODE_UP];
         bool down  = keyState[SDL_SCANCODE_DOWN];
@@ -50,27 +50,25 @@ void Player::handleInput(const Uint8* keyState, SDL_Renderer* renderer) {
         if (up)    direction.y -= 1;
         if (down)  direction.y += 1;
         if (left)  {
-    direction.x -= 1;
-    AudioManager::playSound("Data/Sound/footstep.wav");
-    Mix_VolumeChunk(AudioManager::getSound("Data/Sound/footstep.wav"), 10); // 32 là âm lượng nhỏ
-}
-if (right) {
-    direction.x += 1;
-    AudioManager::playSound("Data/Sound/footstep.wav");
-    Mix_VolumeChunk(AudioManager::getSound("Data/Sound/footstep.wav"), 10);
-}
-
+            direction.x -= 1;
+            AudioManager::playSound("Data/Sound/footstep.wav");
+            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/footstep.wav"), 10); // 32 là âm luong nho
         }
+        if (right) {
+            direction.x += 1;
+            AudioManager::playSound("Data/Sound/footstep.wav");
+            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/footstep.wav"), 10);
+        }
+    }
 
-    if (keyState[SDL_SCANCODE_K] && !isAttacking ) {
+    if ((keyState[SDL_SCANCODE_K] || keyState[SDL_SCANCODE_SPACE]) && !isAttacking) {
         AudioManager::playSound("Data/Sound/player_attack.mp3");
-        Mix_VolumeChunk(AudioManager::getSound("Data/Sound/player_attack.mp3"), 30); // 32 là âm lượng nhỏ
-
+        Mix_VolumeChunk(AudioManager::getSound("Data/Sound/player_attack.mp3"), 30);
     }
     if (!isAttacking) {
-    if (direction.x > 0) lastDirection = 1;
-    if (direction.x < 0) lastDirection = -1;
-}
+        if (direction.x > 0) lastDirection = 1;
+        if (direction.x < 0) lastDirection = -1;
+    }
 
 }
 

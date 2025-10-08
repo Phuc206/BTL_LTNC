@@ -64,41 +64,42 @@ void Game::processEvents(SDL_Renderer* renderer, bool& running) {
             break;
         }
 
-    // Gọi handleInput của HUD để xử lý thanh trượt âm lượng
+        // Goi handleInput cua HUD de xu lý thanh truot âm luong
         if (hud->handleInput(event, this)) {
-            continue; // Nếu đang kéo slider, không xử lý input khác
+            continue; // Neu dang kéo slider, không xu lý input khác
         }
 
-    const Uint8* keyState = SDL_GetKeyboardState(NULL);
-    if (keyState[SDL_SCANCODE_Q]) {
-        if (hud->skills[0].ready()) { // Kiểm tra kỹ năng lửa sẵn sàng
-        AudioManager::playSound("Data/Sound/fire.wav");
-        Mix_VolumeChunk(AudioManager::getSound("Data/Sound/fire.wav"), 50); // 32 là âm lượng nhỏ
+        const Uint8* keyState = SDL_GetKeyboardState(NULL);
+        if (keyState[SDL_SCANCODE_Q]) {
+            if (hud->skills[0].ready()) { // Kiem tra ki nang lua san sàng
+            AudioManager::playSound("Data/Sound/fire.wav");
+            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/fire.wav"), 50); // 32 là âm luong nho
 
-            hud->useSkill(0); // Kích hoạt kỹ năng
-            // Offset dựa trên hướng cuối cùng của nhân vật
-            Vector2D offset = (player->getLastDirection() == 1) ? Vector2D(2.0f, -0.5f) : Vector2D(-3.0f, -0.5f);
-            Vector2D firePos = player->getPos() + offset; // Cách nhân vật 1 đơn vị theo hướng
-            FireEffect fireEffect(renderer, firePos);
-            addFireEffect(fireEffect); // Thêm hiệu ứng lửa
-            player->currentMP -= 10;
+                hud->useSkill(0); // Kích hoat ki nang
+                // Offset dua trên huong cuoi cùng cua nhân vat
+                Vector2D offset = (player->getLastDirection() == 1) ? Vector2D(2.0f, -0.5f) : Vector2D(-3.0f, -0.5f);
+                Vector2D firePos = player->getPos() + offset; // Cách nhân vat 1 don vi theo huong
+                FireEffect fireEffect(renderer, firePos);
+                addFireEffect(fireEffect); // Thêm hieu ung lua
+                player->currentMP -= 10;
+            }
+
         }
 
-    }
-    if (keyState[SDL_SCANCODE_E]) {
-        if (hud->skills[1].ready()) { // Kỹ năng băng là skill thứ 2
-            AudioManager::playSound("Data/Sound/ice.wav");
-            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/ice.wav"), 50); // 32 là âm lượng nhỏ
+        if (keyState[SDL_SCANCODE_E]) {
+            if (hud->skills[1].ready()) { // Ki nang bang là skill thu 2
+                AudioManager::playSound("Data/Sound/ice.wav");
+                Mix_VolumeChunk(AudioManager::getSound("Data/Sound/ice.wav"), 50); // 32 là âm luong nho
 
-            hud->useSkill(1);
-            Vector2D icePos = player->getPos() + Vector2D(0.0f, 1.0f);
-            IceEffect iceEffect(renderer, icePos);
-            addIceEffect(iceEffect);
-            player->currentMP -= 15;
+                hud->useSkill(1);
+                Vector2D icePos = player->getPos() + Vector2D(0.0f, 1.0f);
+                IceEffect iceEffect(renderer, icePos);
+                addIceEffect(iceEffect);
+                player->currentMP -= 15;
+            }
         }
-    }
     player->handleInput(keyState, renderer);
-}
+    }
 }
 
 
@@ -138,10 +139,10 @@ void Game::update(SDL_Renderer* renderer, float dT, Level& level) {
                 spawnBoss();
             }
 
-            // Kiểm tra Boss chết
+            // Kiem tra Boss chet
             if (bossSpawned && allEnemiesDead()) {
                 std::cout << "Boss đã chết! Phá đảo Map 1.\n";
-                gameState = GameState::Victory; // Chuyển sang trạng thái Victory
+                gameState = GameState::Victory; // Chuyen sang trang thái Victory
             }
             break;
 
@@ -158,11 +159,11 @@ void Game::update(SDL_Renderer* renderer, float dT, Level& level) {
             break;
 
         case GameState::Victory:
-            showVictoryMenu(renderer); // Hiển thị khung Victory
+            showVictoryMenu(renderer); // Hien thi khung Victory
             break;
 
         case GameState::Paused:
-            showPauseMenu(renderer); // Hiển thị Pause Menu
+            showPauseMenu(renderer); // Hien thi Pause Menu
             break;
 
         case GameState::Quit:
@@ -511,10 +512,16 @@ bool Game::showAboutScreen(SDL_Renderer* renderer) {
         SDL_Rect infoBox = { 100, 100, 600, 400 };
         SDL_RenderFillRect(renderer, &infoBox);
 
-        renderText(renderer, "Not Your Own Adventure !", 140, 120, 32);
-        renderText(renderer, "Developer: Capybara ", 140, 170, 24);
-        renderText(renderer, "Fight enemies and enjoy your adventure !", 140, 220, 24);
-        renderText(renderer, "Press back to return to menu.", 140, 270, 24);
+        renderText(renderer, "NOT YOUR OWN ADVENTURE!", 150, 130, 32);
+        renderText(renderer, "Developed: LXP", 150, 180, 24);
+        renderText(renderer, "You play as a lone adventurer,", 150, 220, 24);
+        renderText(renderer, "fighting enemies and surviving endless waves.", 150, 250, 24);
+        renderText(renderer, "Controls:", 150, 290, 24);
+        renderText(renderer, "- Move: Arrow Keys", 170, 320, 22);
+        renderText(renderer, "- Attack: K", 170, 345, 22);
+        renderText(renderer, "- Skill Q/E: Fire / Ice Attack", 170, 370, 22);
+        renderText(renderer, "- ESC: Pause or Back", 170, 395, 22);
+        renderText(renderer, "Press Back to return to the main menu", 150, 440, 22);
 
         SDL_RenderCopy(renderer, isButtonHover ? backButtonHover : backButton, nullptr, &backRect);
         SDL_RenderPresent(renderer);

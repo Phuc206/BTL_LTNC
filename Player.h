@@ -38,20 +38,25 @@ public:
 
     int getCurrentHP() { return currentHP; }
     int getMaxHP() { return maxHP; }
-    int getCurrentMP() { return currentMP; }
-    int getMaxMP() { return maxMP; }
+    float getCurrentMP() { return currentMP; }
+    float getMaxMP() { return maxMP; }
 
     void removeHealth(int damage);
 
     void increaseHealth();
+
+    int attackDamage = 10;
+    int maxHP = 100;
+    int currentHP = 100;
+    float maxMP = 50.0;
+    float currentMP = 50;
+    int coin = 0;
 
     void levelUp();
 
     int getCoins() const { return coin; }
 
     int getLastDirection(){return lastDirection;}
-
-    float currentMP = 50;
 
     bool isDead = false;
 
@@ -107,12 +112,6 @@ private:
 
 
     Game* game;
-
-    int attackDamage = 10;
-    int maxHP = 100;
-    int currentHP = 100;
-    float maxMP = 50;
-    int coin = 0;
 
 
     Timer damageCooldown = Timer(0.7f); // 1 giay giua moi lan nhan damage
