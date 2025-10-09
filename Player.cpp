@@ -42,10 +42,10 @@ void Player::handleInput(const Uint8* keyState, SDL_Renderer* renderer) {
 
     if (!isAttacking) {  // Không nhan input di chuyen khi dang tan công
         direction = Vector2D(0, 0);
-        bool up    = keyState[SDL_SCANCODE_UP];
-        bool down  = keyState[SDL_SCANCODE_DOWN];
-        bool left  = keyState[SDL_SCANCODE_LEFT];
-        bool right = keyState[SDL_SCANCODE_RIGHT];
+        bool up    = keyState[SDL_SCANCODE_W];
+        bool down  = keyState[SDL_SCANCODE_S];
+        bool left  = keyState[SDL_SCANCODE_A];
+        bool right = keyState[SDL_SCANCODE_D];
 
         if (up)    direction.y -= 1;
         if (down)  direction.y += 1;
@@ -124,10 +124,10 @@ void Player::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits, SDL
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
     direction = Vector2D(0, 0);
 
-    if (keyState[SDL_SCANCODE_UP]) direction.y -= 1;
-    if (keyState[SDL_SCANCODE_DOWN]) direction.y += 1;
-    if (keyState[SDL_SCANCODE_LEFT]) direction.x -= 1;
-    if (keyState[SDL_SCANCODE_RIGHT]) direction.x += 1;
+    if (keyState[SDL_SCANCODE_W]) direction.y -= 1;
+    if (keyState[SDL_SCANCODE_S]) direction.y += 1;
+    if (keyState[SDL_SCANCODE_A]) direction.x -= 1;
+    if (keyState[SDL_SCANCODE_D]) direction.x += 1;
 
     if (direction.magnitude() > 0) {
         direction = direction.normalize();
