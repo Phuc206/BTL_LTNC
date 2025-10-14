@@ -2,6 +2,7 @@
 #include "../Game.h"
 #include <iostream>
 #include "../Support/AudioManager.h"
+#include "../Player.h" // Thêm include này để có định nghĩa đầy đủ của lớp Player
 
 
 const float Unit::size = 0.48f;
@@ -47,7 +48,10 @@ void Unit::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
     }
 
     if (state == UnitState::Hurt) {
-        if (frame >= getFrameCount() - 1) setState(UnitState::Run);
+        if (frame >= getFrameCount() - 1) {
+            setState(UnitState::Run);
+            frame = 0;
+        }
         return;
     }
 
@@ -159,9 +163,6 @@ void Unit::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
     SDL_RenderCopy(renderer, currentTexture, &srcRect, &destRect);
 }
 
-
-
-
 bool Unit::checkOverlap(Vector2D posOther, float sizeOther) {
     return (posOther - pos).magnitude() <= (sizeOther + size) / 2.0f;
 }
@@ -171,11 +172,11 @@ bool Unit::isDead() { return isdead; }
 Vector2D Unit::getPos() { return pos; }
 
 void Unit::takeDamage(int damage, Game* game) {
-    if (state == UnitState::Death) return; // Khong nhan sat thuong khi da chet
+    if (state == UnitState::Death) return;
 
     health -= damage;
     if (health <= 0) {
-        if (state != UnitState::Death) { // Chi chuyen sang Death neu chua o trang thai nay
+        if (state != UnitState::Death) {
             AudioManager::playSound("Data/Sound/monster_die.mp3");
             Mix_VolumeChunk(AudioManager::getSound("Data/Sound/monster_die.mp3"), 50);
             setState(UnitState::Death);
@@ -193,7 +194,7 @@ void Unit::takeDamage(int damage, Game* game) {
                 }
             }
         }
-    } else if (state != UnitState::Hurt) { // Chi chuyen sang Hurt neu chua o trang thai nay
+    } else if (state != UnitState::Hurt) {
         setState(UnitState::Hurt);
         timerJustHurt.resetToMax();
         frame = 0;
@@ -201,24 +202,20 @@ void Unit::takeDamage(int damage, Game* game) {
     }
 }
 
-
-
 void Unit::setState(UnitState newState) {
-    if (state == newState) return; // Tranh reset frame neu dang cung trang thai
+    if (state == newState) return;
 
     state = newState;
-    frame = 0; // Reset lai frame khi doi trang thai
+    frame = 0;
 
     switch (state) {
         case UnitState::Run: frameTime = 0.15f; break;
         case UnitState::Attack: frameTime = 0.1f; break;
-        case UnitState::Hurt: frameTime = 0.2f; break; // Dieu chinh thoi gian frame Hurt
+        case UnitState::Hurt: frameTime = 0.2f; break;
         case UnitState::Death: frameTime = 0.2f; break;
         default: frameTime = 0.15f; break;
     }
 }
-
-
 
 SDL_Texture* Unit::getTextureForState() {
     switch (state) {

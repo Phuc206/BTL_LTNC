@@ -36,18 +36,24 @@ private:
     int attackFrame = 0;
 
     float animationTimer = 0.0f;
-    float frameTimeBoss = 1.0f / 15.0f; // Mac dinh 15 FPS
+    float frameTimeBoss = 1.0f / 15.0f;
     float summonTimer = 0.0f;
     bool isSummoning = false;
     float idleTimer = 0.0f;
     float idleDuration = 2.0f;
     bool isIdle = false;
-    bool hurtAnimationFinished = false; // Theo dõi khi Hurt ket thúc
+    bool hurtAnimationFinished = false;
 
     int frameWidth = 120;
     int frameHeight = 120;
 
-    float hurtTimer = 0.0f; // Thoi gian bi thuong
-    const float hurtDuration = 0.5f; // Thoi gian chay animation Hurt (0.5 giây)
+    float hurtTimer = 0.0f;
+    const float hurtDuration = 0.5f;
     UnitState previousState;
+
+    // Biến mới để điều khiển việc triệu hồi và sức mạnh
+    int summonCount = 0;
+    bool enraged = false;
+    float defenseMultiplier = 1.0f;
+    float attackMultiplier = 1.0f;
 };

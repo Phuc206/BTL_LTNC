@@ -362,8 +362,3 @@ void Level::checkPotionPickup(Vector2D characterPosition, Player* player) {
         }
     }
 }
-
-
-
-
-

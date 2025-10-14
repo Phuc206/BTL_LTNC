@@ -1,6 +1,7 @@
 #include "Player.h"
 #include "iostream"
 #include "Support/AudioManager.h"
+#include <memory>
 
 Player::Player(Game* gamePtr, SDL_Renderer* renderer, Vector2D startPos)
     : game(gamePtr), pos(startPos), lastDirection(0),
@@ -26,7 +27,6 @@ Player::Player(Game* gamePtr, SDL_Renderer* renderer, Vector2D startPos)
     }
 }
 
-
 Player::~Player() {
     SDL_DestroyTexture(textureIdleLeft);
     SDL_DestroyTexture(textureIdleRight);
@@ -35,12 +35,11 @@ Player::~Player() {
     SDL_DestroyTexture(textureAttack1);
 }
 
-
 void Player::handleInput(const Uint8* keyState, SDL_Renderer* renderer) {
     AudioManager::init();
     if (state == PlayerState::Death) return;
 
-    if (!isAttacking) {  // Không nhan input di chuyen khi dang tan công
+    if (!isAttacking) { // Khong nhan input di chuyen khi dang tan cong
         direction = Vector2D(0, 0);
         bool up    = keyState[SDL_SCANCODE_W];
         bool down  = keyState[SDL_SCANCODE_S];
@@ -52,7 +51,7 @@ void Player::handleInput(const Uint8* keyState, SDL_Renderer* renderer) {
         if (left)  {
             direction.x -= 1;
             AudioManager::playSound("Data/Sound/footstep.wav");
-            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/footstep.wav"), 10); // 32 là âm luong nho
+            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/footstep.wav"), 10);
         }
         if (right) {
             direction.x += 1;
@@ -69,17 +68,15 @@ void Player::handleInput(const Uint8* keyState, SDL_Renderer* renderer) {
         if (direction.x > 0) lastDirection = 1;
         if (direction.x < 0) lastDirection = -1;
     }
-
 }
-
 
 void Player::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits, SDL_Renderer* renderer, Level& level) {
     hurtTimer.countDown(dT);
 
-    // Lưu trạng thái trước đó để kiểm tra thay đổi animation
+    // Luu trang thai truoc do de kiem tra thay doi animation
     PlayerState previousState = state;
 
-   std::cout << "Update called - dT: " << dT << ", currentMP: " << currentMP << ", maxMP: " << maxMP << "\n";
+    std::cout << "Update called - dT: " << dT << ", currentMP: " << currentMP << ", maxMP: " << maxMP << "\n";
     if (currentMP < maxMP) {
         currentMP += dT * 5.0f;
         if (currentMP > maxMP) currentMP = maxMP;
@@ -100,27 +97,26 @@ void Player::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits, SDL
         }
 
         if (deathTimer.timeSIsZero()) {
-            // Xử lý sau khi chết xong (biến mất, hồi sinh, hoặc load màn mới)
+            // Xu ly sau khi chet xong
         }
         return;
     }
 
     if (state == PlayerState::Hurt) {
-    if (hurtTimer.timeSIsZero()) {
-        state = prevStateBeforeHurt;
-        frame = prevFrameBeforeHurt;
+        if (hurtTimer.timeSIsZero()) {
+            state = prevStateBeforeHurt;
+            frame = prevFrameBeforeHurt;
 
-        // 🚀 Nếu nhân vật đang di chuyển, đặt lại đúng trạng thái
-        if (direction.magnitude() > 0) {
-            state = (direction.x > 0) ? PlayerState::RunRight : PlayerState::RunLeft;
+            // Neu nhan vat dang di chuyen, dat lai dung trang thai
+            if (direction.magnitude() > 0) {
+                state = (direction.x > 0) ? PlayerState::RunRight : PlayerState::RunLeft;
+            }
+        } else {
+            return; // Khong update neu van con bi Hurt
         }
-    } else {
-        return;  // 🛑 Không update nếu vẫn còn bị Hurt
     }
-}
 
-
-    // Xử lý phím
+    // Xu ly phim
     const Uint8* keyState = SDL_GetKeyboardState(NULL);
     direction = Vector2D(0, 0);
 
@@ -133,7 +129,7 @@ void Player::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits, SDL
         direction = direction.normalize();
     }
 
-    // Cập nhật trạng thái di chuyển nếu không đang tấn công
+    // Cap nhat trang thai di chuyen neu khong dang tan cong
     if (!isAttacking) {
         if (direction.x > 0) {
             state = PlayerState::RunRight;
@@ -146,23 +142,22 @@ void Player::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits, SDL
         }
     }
 
-    // Kiểm tra tấn công
+    // Kiem tra tan cong
     if (!isAttacking) {
-        if (keyState[SDL_SCANCODE_K] && shootCooldown.timeSIsZero()) { // Attack1
+        if (keyState[SDL_SCANCODE_K] && shootCooldown.timeSIsZero()) {
             state = (lastDirection == -1) ? PlayerState::Attack1Left : PlayerState::Attack1;
             isAttacking = true;
             shootCooldown.resetToMax();
         }
-
     }
 
-    // Cập nhật animation khi thay đổi trạng thái
+    // Cap nhat animation khi thay doi trang thai
     if (state != previousState) {
         frame = 0;
         frameTimer = 0.0f;
     }
 
-    // Tính toán di chuyển
+    // Tinh toan di chuyen
     float distanceMove = speed * dT;
     if (isAttacking) {
         distanceMove *= 0.5f;
@@ -172,7 +167,7 @@ void Player::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits, SDL
     pos.x = newPos.x;
     pos.y = newPos.y;
 
-    // Giữ nhân vật trong giới hạn bản đồ
+    // Giu nhan vat trong gioi han ban do
     float minX = 0.5f, minY = 0.5f;
     float maxX = level.GetX() - 0.5f, maxY = level.GetY() - 0.5f;
 
@@ -181,74 +176,67 @@ void Player::update(float dT, std::vector<std::shared_ptr<Unit>>& listUnits, SDL
     if (pos.x > maxX) pos.x = maxX;
     if (pos.y > maxY) pos.y = maxY;
 
-    // Cập nhật cooldown bắn
+    // Cap nhat cooldown ban
     shootCooldown.countDown(dT);
 
-    // Cập nhật frame animation
+    // Cap nhat frame animation
     frameTimer += dT;
     if (frameTimer >= frameTime) {
         frameTimer = 0.0f;
         frame++;
-        int maxFrames = 8;  // Số frame cố định cho animation
-
+        int maxFrames = 8;
         if (frame >= maxFrames) {
             frame = 0;
-    if (state == PlayerState::Attack1 || state == PlayerState::Attack1Left) {
-        isAttacking = false;
+            if (state == PlayerState::Attack1 || state == PlayerState::Attack1Left) {
+                isAttacking = false;
 
-        // Kiểm tra input để không reset về Idle nếu đang di chuyển
-        if (direction.x > 0) {
-            state = PlayerState::RunRight;
-        } else if (direction.x < 0) {
-            state = PlayerState::RunLeft;
-        } else {
-            state = (lastDirection == -1) ? PlayerState::IdleLeft : PlayerState::IdleRight;
-        }
-    }
-        }
-    }
-
-
-
-    // Làm mượt vị trí nhân vật
-    smoothPos = smoothPos + (pos - smoothPos) * 0.2f;
-
-AudioManager::init();
-
-    if (state == PlayerState::Attack1 || state == PlayerState::Attack1Left) {
-    if (damageCooldown.timeSIsZero()) { // Chỉ cho phép gây damage khi cooldown về 0
-        for (auto& unit : listUnits) {
-            float distance = (unit->getPos() - pos).magnitude();
-            if (distance < attackRange) { // Phạm vi đánh
-
-                unit->takeDamage(attackDamage, game);
-                damageCooldown.resetToMax(); // Bắt đầu thời gian hồi cho lần đánh tiếp theo
-
+                // Kiem tra input de khong reset ve Idle neu dang di chuyen
+                if (direction.x > 0) {
+                    state = PlayerState::RunRight;
+                } else if (direction.x < 0) {
+                    state = PlayerState::RunLeft;
+                } else {
+                    state = (lastDirection == -1) ? PlayerState::IdleLeft : PlayerState::IdleRight;
+                }
             }
         }
     }
-}
-    // Cập nhật cooldown sát thương
+
+    // Lam muot vi tri nhan vat
+    smoothPos = smoothPos + (pos - smoothPos) * 0.2f;
+
+    AudioManager::init();
+
+    if (state == PlayerState::Attack1 || state == PlayerState::Attack1Left) {
+        if (damageCooldown.timeSIsZero()) { // Chi cho phep gay damage khi cooldown ve 0
+            for (auto& unit : listUnits) {
+                float distance = (unit->getPos() - pos).magnitude();
+                if (distance < attackRange) { // Pham vi danh
+                    unit->takeDamage(attackDamage, game);
+                    damageCooldown.resetToMax(); // Bat dau thoi gian hoi cho lan danh tiep theo
+                }
+            }
+        }
+    }
+    // Cap nhat cooldown sat thuong
     damageCooldown.countDown(dT);
 
-    // Giữ HP trong giới hạn
+    // Giu HP trong gioi han
     if (currentHP > maxHP) currentHP = maxHP;
 
 
-     // Kiểm tra va chạm với coin
+    // Kiem tra va cham voi coin
     for (auto it = game->coins.begin(); it != game->coins.end(); ) {
         if ((*it)->checkCollision(pos, 1.0f)) {
-             coin++;   // Phạm vi 1.0f
-            it = game->coins.erase(it); // Xóa coin sau khi thu thập
+            coin++;
+            it = game->coins.erase(it); // Xoa coin sau khi thu thap
         } else {
             ++it;
         }
     }
-
 }
 
-
-void Player::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) { // Thêm cameraPos
+void Player::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
     if (!renderer) return;
 
     SDL_Texture* currentTexture = textureIdleRight;
@@ -271,43 +259,40 @@ void Player::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) { //
 
     SDL_Rect srcRect = { frame * frameWidth, 0, frameWidth, frameHeight };
     SDL_Rect destRect = { (int)(pos.x * tileSize) - frameWidth / 2 - (int)(cameraPos.x * tileSize),
-                      (int)(pos.y * tileSize) - frameHeight / 2 - (int)(cameraPos.y * tileSize),
-                      frameWidth, frameHeight };
+                           (int)(pos.y * tileSize) - frameHeight / 2 - (int)(cameraPos.y * tileSize),
+                           frameWidth, frameHeight };
 
     if (state == PlayerState::Hurt) {
         Uint32 currentTime = SDL_GetTicks();
         if ((currentTime / 100) % 2 == 0) {
-            SDL_SetTextureAlphaMod(currentTexture, 50); // Làm mờ nhân vật
+            SDL_SetTextureAlphaMod(currentTexture, 50); // Lam mo nhan vat
         } else {
-            SDL_SetTextureAlphaMod(currentTexture, 255); // Hiện lại
+            SDL_SetTextureAlphaMod(currentTexture, 255); // Hien lai
         }
     } else {
-        SDL_SetTextureAlphaMod(currentTexture, 255); // Bình thường không bị mờ
+        SDL_SetTextureAlphaMod(currentTexture, 255); // Binh thuong khong bi mo
     }
 
     SDL_RenderCopy(renderer, currentTexture, &srcRect, &destRect);
-
 }
-
-
 
 void Player::removeHealth(int damage) {
     AudioManager::init();
-    if (!damageCooldown.timeSIsZero()) return;  // Cooldown tránh bị đánh liên tục
+    if (!damageCooldown.timeSIsZero()) return; // Cooldown tranh bi danh lien tuc
 
     currentHP -= damage;
     damageCooldown.resetToMax();
     hurtTimer.resetToMax();
 
-    if (state != PlayerState::Hurt) {  // 🛠 Chỉ lưu trạng thái nếu chưa bị Hurt
+    if (state != PlayerState::Hurt) { // Chi luu trang thai neu chua bi Hurt
         prevStateBeforeHurt = state;
         prevFrameBeforeHurt = frame;
     }
 
     state = PlayerState::Hurt;
-    frame = 0;  // 🚀 Reset frame Hurt để chắc chắn animation chạy từ đầu
+    frame = 0; // Reset frame Hurt de chac chan animation chay tu dau
 
-     if (currentHP <= 0) {
+    if (currentHP <= 0) {
         AudioManager::playSound("Data/Sound/player_die.mp3");
         Mix_VolumeChunk(AudioManager::getSound("Data/Sound/player_die.mp3"), 100);
 
@@ -315,7 +300,7 @@ void Player::removeHealth(int damage) {
         state = PlayerState::Death;
         frame = 0;
         isDead = true;
-        deathTimer.resetToMax(); // Bắt đầu timer cho animation Death
+        deathTimer.resetToMax(); // Bat dau timer cho animation Death
         return;
     }
 }
@@ -328,31 +313,24 @@ void Player::levelUp() {
     level++;
     maxHP += 5;
     attackDamage += 3;
-    std::cout << "🟢 Level Up! Cấp hiện tại: " << level << "\n";
+    std::cout << "🟢 Level Up! Cap hien tai: " << level << "\n";
 }
 
-
-
 void Player::reset() {
-    // Đặt lại trạng thái ban đầu của nhân vật
+    // Dat lai trang thai ban dau cua nhan vat
     currentHP = maxHP;
     currentMP = maxMP;
-    pos = Vector2D(15, 10); // Ví dụ: Đặt lại vị trí trung tâm hoặc vị trí spawn
+    pos = Vector2D(15, 10); // Vi du: Dat lai vi tri trung tam hoac vi tri spawn
     isDead = false;
     frame = 0;
-    state = PlayerState::IdleRight; // Đặt lại trạng thái idle
+    state = PlayerState::IdleRight; // Dat lai trang thai idle
     shootCooldown.resetToMax();
     damageCooldown.resetToMax();
     hurtTimer.resetToMax();
     deathTimer.resetToMax();
     coin = 0;
     level = 1;
-    attackDamage = 10; // Hoặc giá trị mặc định ban đầu
+    attackDamage = 10; // Hoac gia tri mac dinh ban dau
 
-    std::cout << "🟢 Nhân vật đã được hồi sinh!\n";
+    std::cout << "🟢 Nhan vat da duoc hoi sinh!\n";
 }
-
-
-
-
-

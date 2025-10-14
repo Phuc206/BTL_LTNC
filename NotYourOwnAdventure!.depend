@@ -642,7 +642,7 @@
 	"Support/Vector2D.h"
 	"Support/Vector2D.h"
 
-1758474220 d:\ltnc_btl\notyourownadventure\support\vector2d.h
+1760461754 d:\ltnc_btl\notyourownadventure\support\vector2d.h
 	<cmath>
 
 1759769903 d:\ltnc_btl\notyourownadventure\support\audiomanager.h
@@ -662,7 +662,7 @@
 1758474220 d:\ltnc_btl\notyourownadventure\enemies\bat.h
 	"Unit.h"
 
-1759771576 d:\ltnc_btl\notyourownadventure\enemies\unit.h
+1760457390 d:\ltnc_btl\notyourownadventure\enemies\unit.h
 	<memory>
 	<vector>
 	"SDL.h"
@@ -673,7 +673,7 @@
 	"../Player.h"
 	"../Level.h"
 
-1758474220 d:\ltnc_btl\notyourownadventure\level.h
+1760459223 d:\ltnc_btl\notyourownadventure\level.h
 	<queue>
 	<vector>
 	<string>
@@ -686,7 +686,7 @@
 
 1759769984 d:\ltnc_btl\notyourownadventure\support\timer.h
 
-1759941767 d:\ltnc_btl\notyourownadventure\player.h
+1760459223 d:\ltnc_btl\notyourownadventure\player.h
 	"SDL.h"
 	"Support/Vector2D.h"
 	"Support/TextureLoader.h"
@@ -708,7 +708,7 @@
 	"Skills/FireEffect.h"
 	"Skills/IceEffect.h"
 
-1759771289 d:\ltnc_btl\notyourownadventure\hud.h
+1760457390 d:\ltnc_btl\notyourownadventure\hud.h
 	"SDL.h"
 	"Player.h"
 	<vector>
@@ -735,7 +735,7 @@
 	<iostream>
 	"../Support/AudioManager.h"
 
-1759772173 d:\ltnc_btl\notyourownadventure\enemies\boss.h
+1760461981 d:\ltnc_btl\notyourownadventure\enemies\boss.h
 	"Unit.h"
 	"Bat.h"
 
@@ -745,11 +745,12 @@
 1758474220 d:\ltnc_btl\notyourownadventure\enemies\orc.h
 	"Unit.h"
 
-1759772447 source:d:\ltnc_btl\notyourownadventure\enemies\unit.cpp
+1760457180 source:d:\ltnc_btl\notyourownadventure\enemies\unit.cpp
 	"Unit.h"
 	"../Game.h"
 	<iostream>
 	"../Support/AudioManager.h"
+	"../Player.h"
 
 1759772018 source:d:\ltnc_btl\notyourownadventure\enemies\vampire.cpp
 	"Vampire.h"
@@ -775,7 +776,7 @@
 	"Support/AudioManager.h"
 	"Game.h"
 
-1759772977 source:d:\ltnc_btl\notyourownadventure\level.cpp
+1760461754 source:d:\ltnc_btl\notyourownadventure\level.cpp
 	"Level.h"
 	<iostream>
 	"Player.h"
@@ -787,10 +788,11 @@
 	"Game.h"
 	<ctime>
 
-1759995442 source:d:\ltnc_btl\notyourownadventure\player.cpp
+1760459672 source:d:\ltnc_btl\notyourownadventure\player.cpp
 	"Player.h"
 	"iostream"
 	"Support/AudioManager.h"
+	<memory>
 
 1759772064 source:d:\ltnc_btl\notyourownadventure\skills\fireeffect.cpp
 	"FireEffect.h"

@@ -46,6 +46,14 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
     animationTimer += dT;
     summonTimer += dT;
 
+    // Kich hoat trang thai "enraged" khi mau duoi 50%
+    if (!enraged && health <= maxHealth / 2.0f) {
+        enraged = true;
+        speed *= 1.5f; // Tang toc do di chuyen
+        attackMultiplier = 1.5f; // Tang sat thuong
+        defenseMultiplier = 0.5f; // Giam phong thu de sat thuong nhan vao lon hon
+    }
+
     // Xu ly trang thai Spawning
     if (isSpawning) {
         spawnTimer -= dT;
@@ -70,7 +78,7 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
             currentFrame++;
         }
         if (hurtTimer <= 0.0f) {
-            state = previousState; // Quay lai trang thai truoc do
+            state = previousState;
             currentFrame = 0;
             animationTimer = 0.0f;
         }
@@ -107,13 +115,13 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
     }
 
     if (state == UnitState::Death) {
-        if (!hurtAnimationFinished) { // Chi cap nhat neu animation chua xong
+        if (!hurtAnimationFinished) {
             if (animationTimer >= frameTimeBoss && currentFrame < deathFrames.size() - 1) {
                 animationTimer = 0.0f;
                 currentFrame++;
             } else if (currentFrame >= deathFrames.size() - 1) {
-                hurtAnimationFinished = true; // Danh dau animation da hoan tat
-                isdead = true; // Boss chinh thuc chet
+                hurtAnimationFinished = true;
+                isdead = true;
             }
         }
         return;
@@ -132,7 +140,7 @@ void Boss::update(float dT, Level& level, std::vector<std::shared_ptr<Unit>>& li
             isAttacking = false;
             attackFrame = 0;
             if (distance <= 1.5f && !player.isDead) {
-                player.removeHealth(attackDamage);
+                player.removeHealth(attackDamage * attackMultiplier); // Áp dụng sat thuong da tang
             }
             state = UnitState::Run;
         }
@@ -192,12 +200,14 @@ void Boss::draw(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
 void Boss::summonMinions(SDL_Renderer* renderer, Level& level, std::vector<std::shared_ptr<Unit>>& listUnits) {
     if (!isSummoning || !renderer) return;
 
-    int numMinions = 3;
-    float summonRadius = 2.0f; // 2 don vi luoi logic
+    // Tang so luong minion sau moi dot trieu hoi
+    summonCount++;
+    int numMinions = 3 + summonCount;
+    float summonRadius = 2.0f;
 
     for (int i = 0; i < numMinions; ++i) {
-        float offsetX = (rand() % 200) / 100.0f - 1.0f; // -1.0 den 1.0
-        float offsetY = (rand() % 200) / 100.0f - 1.0f; // -1.0 den 1.0
+        float offsetX = (rand() % 200) / 100.0f - 1.0f;
+        float offsetY = (rand() % 200) / 100.0f - 1.0f;
         Vector2D summonPos = pos + Vector2D(offsetX * summonRadius, offsetY * summonRadius);
         summonPos.x = std::max(0.5f, std::min(summonPos.x, (float)level.GetX() - 0.5f));
         summonPos.y = std::max(0.5f, std::min(summonPos.y, (float)level.GetY() - 0.5f));
@@ -207,51 +217,41 @@ void Boss::summonMinions(SDL_Renderer* renderer, Level& level, std::vector<std::
 }
 
 void Boss::drawHealthBar(SDL_Renderer* renderer, int tileSize, Vector2D cameraPos) {
-    const int barWidth = 200;  // Chieu rong thanh mau (pixel)
-    const int barHeight = 5;  // Chieu cao thanh máu
+    const int barWidth = 200;
+    const int barHeight = 5;
 
-    // Tinh vi tri thanh mau dua tren vi tri boss
     int barX = ((int)(pos.x * tileSize) - barWidth / 2 - (int)(cameraPos.x * tileSize)) + 60;
     int barY = (int)(pos.y * tileSize) - frameHeight / 2 - (int)(cameraPos.y * tileSize);
 
     SDL_Rect bg = { barX, barY, barWidth, barHeight };
     SDL_Rect bar = { barX, barY, (int)(barWidth * health / maxHealth), barHeight };
 
-    // Ve vien
     SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
     SDL_RenderDrawRect(renderer, &bg);
 
-    // Ve nen
     SDL_SetRenderDrawColor(renderer, 100, 100, 100, 255);
     SDL_RenderFillRect(renderer, &bg);
 
-    // Ve thanh mau
     SDL_SetRenderDrawColor(renderer, 255, 0, 0, 255);
     SDL_RenderFillRect(renderer, &bar);
 }
 
 void Boss::takeDamage(int damage, Game* game) {
-    if (state == UnitState::Death || isSpawning) return; // Khong nhan sat thuong khi chet hoac dang spawn
+    if (state == UnitState::Death || isSpawning) return;
 
-    health -= damage;
+    // Giam sat thuong nhan vao dua tren phong thu
+    health -= damage * defenseMultiplier;
 
     if (health > 0 && state != UnitState::Hurt) {
-        previousState = state; // Luu trang thai truoc do
+        previousState = state;
         state = UnitState::Hurt;
-        hurtTimer = hurtDuration; // Dat thoi gian bi thuong
-        currentFrame = 0; // Bat dau animation Hurt tu frame 0
+        hurtTimer = hurtDuration;
+        currentFrame = 0;
         animationTimer = 0.0f;
-        AudioManager::playSound("Data/Sound/boss_hurt.mp3"); // Them am thanh neu co
+        AudioManager::playSound("Data/Sound/boss_hurt.mp3");
     } else if (health <= 0) {
         state = UnitState::Death;
         currentFrame = 0;
         animationTimer = 0.0f;
     }
 }
-
-
-
-
-
-
-
