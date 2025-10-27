@@ -631,68 +631,24 @@
 1758474220 source:d:\c++\ltnc\notyourownadventure--main\notyourownadventure--main\support\vector2d.cpp
 	"Vector2D.h"
 
-<<<<<<< HEAD
-1759772244 source:d:\ltnc_btl\notyourownadventure\coin.cpp
-=======
+1760557174 D
+
 1760557173 source:d:\ltnc_btl\notyourownadventure\coin.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
+
+1760557174 afb8 (Sửa lỗi tự trừ hp)
 	"Coin.h"
 	<iostream>
 	"Support/AudioManager.h"
 	"Support/TextureLoader.h"
-
-<<<<<<< HEAD
-1758474220 d:\ltnc_btl\notyourownadventure\coin.h
-=======
-1760557173 d:\ltnc_btl\notyourownadventure\coin.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
 	"SDL.h"
 	"Support/Vector2D.h"
 	"Support/Vector2D.h"
-
-<<<<<<< HEAD
-1760461754 d:\ltnc_btl\notyourownadventure\support\vector2d.h
-	<cmath>
-
-1759769903 d:\ltnc_btl\notyourownadventure\support\audiomanager.h
-=======
-1760557174 d:\ltnc_btl\notyourownadventure\support\vector2d.h
-	<cmath>
-
-1760557174 d:\ltnc_btl\notyourownadventure\support\audiomanager.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
 	<SDL_mixer.h>
 	<map>
 	<string>
-
-<<<<<<< HEAD
-1758474220 d:\ltnc_btl\notyourownadventure\support\textureloader.h
-=======
-1760557174 d:\ltnc_btl\notyourownadventure\support\textureloader.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
 	<string>
 	<unordered_map>
 	"SDL.h"
-
-<<<<<<< HEAD
-1759771651 source:d:\ltnc_btl\notyourownadventure\enemies\bat.cpp
-	"Bat.h"
-	<iostream>
-
-1758474220 d:\ltnc_btl\notyourownadventure\enemies\bat.h
-	"Unit.h"
-
-1760457390 d:\ltnc_btl\notyourownadventure\enemies\unit.h
-=======
-1760557174 source:d:\ltnc_btl\notyourownadventure\enemies\bat.cpp
-	"Bat.h"
-	<iostream>
-
-1760557174 d:\ltnc_btl\notyourownadventure\enemies\bat.h
-	"Unit.h"
-
-1760557174 d:\ltnc_btl\notyourownadventure\enemies\unit.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
 	<memory>
 	<vector>
 	"SDL.h"
@@ -702,12 +658,6 @@
 	"../Support/Timer.h"
 	"../Player.h"
 	"../Level.h"
-
-<<<<<<< HEAD
-1760459223 d:\ltnc_btl\notyourownadventure\level.h
-=======
-1760557173 d:\ltnc_btl\notyourownadventure\level.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
 	<queue>
 	<vector>
 	<string>
@@ -717,16 +667,106 @@
 	<chrono>
 	<vector>
 	"Coin.h"
+	"SDL.h"
+	"Support/Vector2D.h"
+	"Support/TextureLoader.h"
+	"Game.h"
+	<vector>
+	"Level.h"
+	"Support/AudioManager.h"
+	<vector>
+	<chrono>
+	<memory>
+	"SDL.h"
+	"Enemies/Unit.h"
+	"Level.h"
+	"Support/Timer.h"
+	"Player.h"
+	"HUD.h"
+	"Skills/FireEffect.h"
+	"Skills/IceEffect.h"
+	"SDL.h"
+	"Player.h"
+	<vector>
+	<string>
+	"SDL.h"
+	"../Support/Vector2D.h"
+	"../Support/TextureLoader.h"
+	"../Support/Timer.h"
+	<vector>
+	"../Enemies/Unit.h"
+	"SDL.h"
+	"../Support/Vector2D.h"
+	"../Support/TextureLoader.h"
+	"../Support/Timer.h"
+	<vector>
+	"../Enemies/Unit.h"
+	"Boss.h"
+	<iostream>
+	"../Support/AudioManager.h"
+	"Unit.h"
+	"../Game.h"
+	<iostream>
+	"../Support/AudioManager.h"
+	"../Player.h"
+	"Game.h"
+	<iostream>
+	"HUD.h"
+	"Enemies/Orc.h"
+	"Enemies/Vampire.h"
+	"Enemies/Boss.h"
+	<SDL_ttf.h>
+	"Support/AudioManager.h"
+	"algorithm"
+	"HUD.h"
+	"SDL_ttf.h"
+	<iostream>
+	"Support/AudioManager.h"
+	"Game.h"
+	"Level.h"
+	<iostream>
+	"Player.h"
+	"Support/AudioManager.h"
+	<iostream>
+	"SDL.h"
+	"Game.h"
+	<ctime>
+	"Player.h"
+	"iostream"
+	"Support/AudioManager.h"
+	<memory>
+	"TextureLoader.h"
+	<SDL_image.h>
+	<iostream>
+	"Vector2D.h"
 
-<<<<<<< HEAD
-1759769984 d:\ltnc_btl\notyourownadventure\support\timer.h
+1760557173 d:\ltnc_btl\notyourownadventure\coin.h
 
-1760459223 d:\ltnc_btl\notyourownadventure\player.h
-=======
+1760557174 d:\ltnc_btl\notyourownadventure\support\vector2d.h
+	<cmath>
+	<cmath>
+
+1760557174 d:\ltnc_btl\notyourownadventure\support\audiomanager.h
+
+1760557174 d:\ltnc_btl\notyourownadventure\support\textureloader.h
+
+1760557174 source:d:\ltnc_btl\notyourownadventure\enemies\bat.cpp
+	"Bat.h"
+	<iostream>
+	"Bat.h"
+	<iostream>
+
+1760557174 d:\ltnc_btl\notyourownadventure\enemies\bat.h
+	"Unit.h"
+	"Unit.h"
+
+1760557174 d:\ltnc_btl\notyourownadventure\enemies\unit.h
+
+1760557173 d:\ltnc_btl\notyourownadventure\level.h
+
 1760557174 d:\ltnc_btl\notyourownadventure\support\timer.h
 
-1761208012 d:\ltnc_btl\notyourownadventure\player.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
+1761581987 d:\ltnc_btl\notyourownadventure\player.h
 	"SDL.h"
 	"Support/Vector2D.h"
 	"Support/TextureLoader.h"
@@ -735,11 +775,7 @@
 	"Level.h"
 	"Support/AudioManager.h"
 
-<<<<<<< HEAD
-1759943579 d:\ltnc_btl\notyourownadventure\game.h
-=======
-1760557173 d:\ltnc_btl\notyourownadventure\game.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
+1761581998 d:\ltnc_btl\notyourownadventure\game.h
 	<vector>
 	<chrono>
 	<memory>
@@ -752,97 +788,39 @@
 	"Skills/FireEffect.h"
 	"Skills/IceEffect.h"
 
-<<<<<<< HEAD
-1760457390 d:\ltnc_btl\notyourownadventure\hud.h
-=======
 1760557173 d:\ltnc_btl\notyourownadventure\hud.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"SDL.h"
-	"Player.h"
-	<vector>
-	<string>
 
-<<<<<<< HEAD
-1759771960 d:\ltnc_btl\notyourownadventure\skills\fireeffect.h
-=======
 1760557174 d:\ltnc_btl\notyourownadventure\skills\fireeffect.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"SDL.h"
-	"../Support/Vector2D.h"
-	"../Support/TextureLoader.h"
-	"../Support/Timer.h"
-	<vector>
-	"../Enemies/Unit.h"
 
-<<<<<<< HEAD
-1759770150 d:\ltnc_btl\notyourownadventure\skills\iceeffect.h
-=======
 1760557174 d:\ltnc_btl\notyourownadventure\skills\iceeffect.h
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"SDL.h"
-	"../Support/Vector2D.h"
-	"../Support/TextureLoader.h"
-	"../Support/Timer.h"
-	<vector>
-	"../Enemies/Unit.h"
 
-<<<<<<< HEAD
-1759772949 source:d:\ltnc_btl\notyourownadventure\enemies\boss.cpp
-=======
 1760557174 source:d:\ltnc_btl\notyourownadventure\enemies\boss.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"Boss.h"
-	<iostream>
-	"../Support/AudioManager.h"
 
-<<<<<<< HEAD
-1760461981 d:\ltnc_btl\notyourownadventure\enemies\boss.h
+1760557174 d:\ltnc_btl\notyourownadventure\enemies\boss.h
 	"Unit.h"
 	"Bat.h"
-
-1759772133 source:d:\ltnc_btl\notyourownadventure\enemies\orc.cpp
-	"Orc.h"
-
-1758474220 d:\ltnc_btl\notyourownadventure\enemies\orc.h
-	"Unit.h"
-
-1760457180 source:d:\ltnc_btl\notyourownadventure\enemies\unit.cpp
-=======
-1760557174 d:\ltnc_btl\notyourownadventure\enemies\boss.h
 	"Unit.h"
 	"Bat.h"
 
 1760557174 source:d:\ltnc_btl\notyourownadventure\enemies\orc.cpp
 	"Orc.h"
+	"Orc.h"
 
 1760557174 d:\ltnc_btl\notyourownadventure\enemies\orc.h
 	"Unit.h"
+	"Unit.h"
 
 1760557174 source:d:\ltnc_btl\notyourownadventure\enemies\unit.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"Unit.h"
-	"../Game.h"
-	<iostream>
-	"../Support/AudioManager.h"
-	"../Player.h"
 
-<<<<<<< HEAD
-1759772018 source:d:\ltnc_btl\notyourownadventure\enemies\vampire.cpp
-	"Vampire.h"
-
-1758474220 d:\ltnc_btl\notyourownadventure\enemies\vampire.h
-	"Unit.h"
-
-1759994621 source:d:\ltnc_btl\notyourownadventure\game.cpp
-=======
 1760557174 source:d:\ltnc_btl\notyourownadventure\enemies\vampire.cpp
+	"Vampire.h"
 	"Vampire.h"
 
 1760557174 d:\ltnc_btl\notyourownadventure\enemies\vampire.h
 	"Unit.h"
+	"Unit.h"
 
-1760557173 source:d:\ltnc_btl\notyourownadventure\game.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
+1761583051 source:d:\ltnc_btl\notyourownadventure\game.cpp
 	"Game.h"
 	<iostream>
 	"HUD.h"
@@ -853,90 +831,47 @@
 	"Support/AudioManager.h"
 	"algorithm"
 
-<<<<<<< HEAD
-1759771502 source:d:\ltnc_btl\notyourownadventure\hud.cpp
-=======
 1760557173 source:d:\ltnc_btl\notyourownadventure\hud.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"HUD.h"
-	"SDL_ttf.h"
-	<iostream>
-	"Support/AudioManager.h"
-	"Game.h"
 
-<<<<<<< HEAD
-1760461754 source:d:\ltnc_btl\notyourownadventure\level.cpp
-=======
-1761201358 source:d:\ltnc_btl\notyourownadventure\level.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
+1761210831 source:d:\ltnc_btl\notyourownadventure\level.cpp
 	"Level.h"
 	<iostream>
 	"Player.h"
 	"Support/AudioManager.h"
+	<queue>
+	<algorithm>
 
-<<<<<<< HEAD
-1758474220 source:d:\ltnc_btl\notyourownadventure\main.cpp
-=======
 1760557173 source:d:\ltnc_btl\notyourownadventure\main.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	<iostream>
-	"SDL.h"
-	"Game.h"
-	<ctime>
 
-<<<<<<< HEAD
-1760459672 source:d:\ltnc_btl\notyourownadventure\player.cpp
-=======
-1760557173 source:d:\ltnc_btl\notyourownadventure\player.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
+1761581941 source:d:\ltnc_btl\notyourownadventure\player.cpp
 	"Player.h"
 	"iostream"
 	"Support/AudioManager.h"
 	<memory>
 
-<<<<<<< HEAD
-1759772064 source:d:\ltnc_btl\notyourownadventure\skills\fireeffect.cpp
+1760557174 source:d:\ltnc_btl\notyourownadventure\skills\fireeffect.cpp
 	"FireEffect.h"
 	<iostream>
-
-1759770849 source:d:\ltnc_btl\notyourownadventure\skills\iceeffect.cpp
-	"IceEffect.h"
-	<iostream>
-
-1759769843 source:d:\ltnc_btl\notyourownadventure\support\audiomanager.cpp
-	"AudioManager.h"
-	<iostream>
-
-1758474220 source:d:\ltnc_btl\notyourownadventure\support\textureloader.cpp
-=======
-1760557174 source:d:\ltnc_btl\notyourownadventure\skills\fireeffect.cpp
 	"FireEffect.h"
 	<iostream>
 
 1760557174 source:d:\ltnc_btl\notyourownadventure\skills\iceeffect.cpp
 	"IceEffect.h"
 	<iostream>
+	"IceEffect.h"
+	<iostream>
 
 1760557174 source:d:\ltnc_btl\notyourownadventure\support\audiomanager.cpp
 	"AudioManager.h"
 	<iostream>
-
-1760557174 source:d:\ltnc_btl\notyourownadventure\support\textureloader.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"TextureLoader.h"
-	<SDL_image.h>
+	"AudioManager.h"
 	<iostream>
 
-<<<<<<< HEAD
-1758474220 source:d:\ltnc_btl\notyourownadventure\support\timer.cpp
-	"Timer.h"
+1760557174 source:d:\ltnc_btl\notyourownadventure\support\textureloader.cpp
 
-1758474220 source:d:\ltnc_btl\notyourownadventure\support\vector2d.cpp
-=======
 1760557174 source:d:\ltnc_btl\notyourownadventure\support\timer.cpp
+	"Timer.h"
 	"Timer.h"
 
 1760557174 source:d:\ltnc_btl\notyourownadventure\support\vector2d.cpp
->>>>>>> 173afb8 (Sửa lỗi tự trừ hp)
-	"Vector2D.h"
 

@@ -64,38 +64,40 @@ void Game::processEvents(SDL_Renderer* renderer, bool& running) {
             break;
         }
 
-        // Goi handleInput cua HUD de xu lý thanh truot âm luong
+        // Goi handleInput cua HUD de xu ly thanh truot am luong
         if (hud->handleInput(event, this)) {
-            continue; // Neu dang kéo slider, không xu lý input khác
+            continue; // Neu dang keo slider, khong xu ly input khac
         }
 
         const Uint8* keyState = SDL_GetKeyboardState(NULL);
+        // Ki nang Lua (Q)
         if (keyState[SDL_SCANCODE_Q]) {
-            if (hud->skills[0].ready()) { // Kiem tra ki nang lua san sàng
+            if (hud->skills[0].ready() && player->currentMP >= 10) {
             AudioManager::playSound("Data/Sound/fire.wav");
-            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/fire.wav"), 50); // 32 là âm luong nho
+            Mix_VolumeChunk(AudioManager::getSound("Data/Sound/fire.wav"), 50); // 32 la am luong nho
 
-                hud->useSkill(0); // Kích hoat ki nang
-                // Offset dua trên huong cuoi cùng cua nhân vat
+                hud->useSkill(0); // Kich hoat ki nang
+                // Offset dua tren huong cuoi cung cua nhan vat
                 Vector2D offset = (player->getLastDirection() == 1) ? Vector2D(2.0f, -0.5f) : Vector2D(-3.0f, -0.5f);
-                Vector2D firePos = player->getPos() + offset; // Cách nhân vat 1 don vi theo huong
+                Vector2D firePos = player->getPos() + offset; // Cach nhan vat 1 don vi theo huong
                 FireEffect fireEffect(renderer, firePos);
-                addFireEffect(fireEffect); // Thêm hieu ung lua
-                player->currentMP -= 10;
+                addFireEffect(fireEffect); // Them hieu ung lua
+                player->currentMP -= 10; // Tru MP sau khi da kiem tra
             }
 
         }
 
+        // Ki nang Bang (E)
         if (keyState[SDL_SCANCODE_E]) {
-            if (hud->skills[1].ready()) { // Ki nang bang là skill thu 2
+            if (hud->skills[1].ready() && player->currentMP >= 15) { // Ki nang bang la skill thu 2
                 AudioManager::playSound("Data/Sound/ice.wav");
-                Mix_VolumeChunk(AudioManager::getSound("Data/Sound/ice.wav"), 50); // 32 là âm luong nho
+                Mix_VolumeChunk(AudioManager::getSound("Data/Sound/ice.wav"), 50); // 32 la am luong nho
 
                 hud->useSkill(1);
                 Vector2D icePos = player->getPos() + Vector2D(0.0f, 1.0f);
                 IceEffect iceEffect(renderer, icePos);
                 addIceEffect(iceEffect);
-                player->currentMP -= 15;
+                player->currentMP -= 15; // Tru MP sau khi dã kiem tra
             }
         }
     player->handleInput(keyState, renderer);
@@ -132,7 +134,7 @@ void Game::update(SDL_Renderer* renderer, float dT, Level& level) {
             updateCamera();
 
             if (!bossSpawned && spawnUnitCount == 0 && allEnemiesDead()) {
-                std::cout << "Tất cả quái đã chết! Spawn boss...\n";
+                std::cout << "Tat ca quai da chet! Spawn boss...\n";
                 AudioManager::init();
                 AudioManager::playSound("Data/Sound/warning.mp3");
 
@@ -141,8 +143,8 @@ void Game::update(SDL_Renderer* renderer, float dT, Level& level) {
 
             // Kiem tra Boss chet
             if (bossSpawned && allEnemiesDead()) {
-                std::cout << "Boss đã chết! Phá đảo Map 1.\n";
-                gameState = GameState::Victory; // Chuyen sang trang thái Victory
+                std::cout << "Boss da chet! Pha dao Map 1.\n";
+                gameState = GameState::Victory; // Chuyen sang trang thai Victory
             }
             break;
 
@@ -176,13 +178,13 @@ void Game::update(SDL_Renderer* renderer, float dT, Level& level) {
 
 
 void Game::updateUnits(float dT) {
-    // Cập nhật trước
+    // Cap nhat truoc
     for (auto& unit : listUnits) {
         if (unit) {
             unit->update(dT, level, listUnits, *player);
         }
     }
-    // Xóa sau
+    // Xoa sau
     listUnits.erase(
         std::remove_if(listUnits.begin(), listUnits.end(),
             [](const std::shared_ptr<Unit>& unit) { return !unit || unit->isDead(); }),
@@ -194,30 +196,30 @@ void Game::updateUnits(float dT) {
 
 
 void Game::updateSpawnUnitsIfRequired(SDL_Renderer* renderer, float dT) {
-    static bool roundStarted = false; // Biến để theo dõi trạng thái vòng đấu
+    static bool roundStarted = false; // Bien de theo doi trang thai vong dau
 
-    // Nếu đây là vòng đầu tiên, bắt đầu ngay lập tức
+    // Neu day la vong dau tien, bat dau ngay lap tuc
     if (!roundStarted) {
-        spawnUnitCount = 15;  // Chỉ spawn 15 quái duy nhất
+        spawnUnitCount = 15;  // Chi spawn 15 quai duy nhat
         roundStarted = true;
     }
 
-    // Chỉ spawn quái nếu còn số lượng cần spawn và đủ thời gian chờ
+    // Chi spawn quai neu con so luong can spawn va du thoi gian cho
     spawnTimer.countDown(dT);
     if (spawnUnitCount > 0 && spawnTimer.timeSIsZero()) {
-        spawnTimer.resetToMax(); // Đặt lại thời gian spawn quái tiếp theo
+        spawnTimer.resetToMax(); // Dat lai thoi gian spawn quai tiep theo
 
-        // Chọn 1 vị trí random từ 4 phía màn hình
+        // Chon 1 vi tri random tu 4 phia man hinh
         std::vector<Vector2D> spawnLocations = {
-            {rand() % level.GetX(), 0},                         // Trên
-            {rand() % level.GetX(), level.GetY() - 1},         // Dưới
-            {0, rand() % level.GetY()},                         // Trái
-            {level.GetX() - 1, rand() % level.GetY()}         // Phải
+            {rand() % level.GetX(), 0},                         // Tren
+            {rand() % level.GetX(), level.GetY() - 1},         // Duoi
+            {0, rand() % level.GetY()},                         // Trai
+            {level.GetX() - 1, rand() % level.GetY()}         // Phai
         };
 
         Vector2D spawnPos = spawnLocations[rand() % spawnLocations.size()];
         addUnit(renderer, spawnPos);
-        spawnUnitCount--; // Giảm số lượng quái cần spawn
+        spawnUnitCount--; // Giam so luong quai can spawn
 
         }
     }
@@ -227,8 +229,8 @@ void Game::updateSpawnUnitsIfRequired(SDL_Renderer* renderer, float dT) {
 
 
 void Game::draw(SDL_Renderer* renderer) {
-    SDL_SetRenderDrawColor(renderer, 34, 139, 34, 255); // Màu xanh lá cây giống cỏ
-    SDL_RenderClear(renderer); // Xóa sạch renderer
+    SDL_SetRenderDrawColor(renderer, 34, 139, 34, 255); // Mau xanh la cay giong co
+    SDL_RenderClear(renderer); // Xoa sach renderer
 
     level.draw(renderer, tileSize, cameraPos.x, cameraPos.y);
     level.drawDecor(renderer, cameraPos.x, cameraPos.y);
@@ -265,17 +267,17 @@ void Game::addUnit(SDL_Renderer* renderer, Vector2D posMouse) {
 void Game::updateCamera() {
     Vector2D targetPos = player->getPos();
     std::cout<< player->getPos().x << " " << player->getPos().y;
-    // Tính vị trí mục tiêu của camera
+    // Tinh vi tri muc tieu cua camera
     Vector2D targetCameraPos;
     targetCameraPos.x = targetPos.x - (windowWidth / (2 * tileSize));
     targetCameraPos.y = targetPos.y - (windowHeight / (2 * tileSize));
 
-    // Nội suy mượt mà
+    // Noi suy muot ma
     const float lerpSpeed = 0.1f;
     cameraPos.x = cameraPos.x + (targetCameraPos.x - cameraPos.x) * lerpSpeed;
     cameraPos.y = cameraPos.y + (targetCameraPos.y - cameraPos.y) * lerpSpeed;
 
-    // Giới hạn camera
+    // Gioi han camera
     float maxCameraX = level.GetX() - (windowWidth / tileSize);
     float maxCameraY = level.GetY() - (windowHeight / tileSize);
 
@@ -303,39 +305,39 @@ void Game::spawnBoss() {
         return;
     }
 
-    std::cout << "Boss đã xuất hiện tại vị trí cố định!\n";
+    std::cout << "Boss da xuat hien tai vi tri co dinh!\n";
 
-    // Lấy vị trí player
+    // Lay vi tri player
     Vector2D playerPos = player->getPos();
     std::cout << "Player Pos: (" << playerPos.x << ", " << playerPos.y << ")\n";
 
-    // Chọn hướng ngẫu nhiên hoặc cố định (ví dụ: bên phải player)
-    Vector2D bossOffset(3.0f, 0.0f); // Cách player 3 đơn vị bên phải, bạn có thể thay đổi
-    // Một số tùy chọn khác:
-    // Vector2D bossOffset(-3.0f, 0.0f); // Bên trái
-    // Vector2D bossOffset(0.0f, -3.0f); // Phía trên
-    // Vector2D bossOffset(0.0f, 3.0f);  // Phía dưới
+    // Chon huong ngau nhien hoac co dinh (vi du: ben phai player)
+    Vector2D bossOffset(3.0f, 0.0f); // Cach player 3 don vi ben phai, ban co the thay doi
+    // Mot so tuy chon khac:
+    // Vector2D bossOffset(-3.0f, 0.0f); // Ben trai
+    // Vector2D bossOffset(0.0f, -3.0f); // Phia tren
+    // Vector2D bossOffset(0.0f, 3.0f);  // Phia duoi
 
     Vector2D bossPosition = playerPos + bossOffset;
 
-    // Giới hạn vị trí trong bản đồ
+    // Gioi han vi tri trong ban do
     float maxX = static_cast<float>(level.GetX() - 1); // tileCountX - 1
     float maxY = static_cast<float>(level.GetY() - 1); // tileCountY - 1
     bossPosition.x = std::max(0.5f, std::min(bossPosition.x, maxX - 0.5f));
     bossPosition.y = std::max(0.5f, std::min(bossPosition.y, maxY - 0.5f));
 
-    // Tạo boss
+    // Tao boss
     auto boss = std::make_shared<Boss>(renderer_, bossPosition);
     if (!boss) {
         std::cout << "Error: Failed to create Boss!" << std::endl;
         return;
     }
 
-    // Thêm vào danh sách đơn vị
+    // Them vao danh sach don vi
     listUnits.push_back(boss);
     bossSpawned = true;
 
-    // Debug thông tin
+    // Debug thong tin
     std::cout << "Boss HP: " << boss->getHealth()
               << ", Pos: (" << bossPosition.x << ", " << bossPosition.y
               << "), List size: " << listUnits.size() << "\n";
@@ -420,8 +422,8 @@ bool Game::showMenu(SDL_Renderer* renderer) {
                 if (isHoverStore) {
                     AudioManager::playSound("Data/Sound/press_button.mp3");
                     gameState = GameState::Quit;
-                    inMenu = false;              // Thoát vòng lặp menu
-                    playSelected = false;        // Đảm bảo không vào Gameplay
+                    inMenu = false;              // Thoat vong lap menu
+                    playSelected = false;        // Dam bao khong vao Gameplay
                     break;
                 }
             }
@@ -455,21 +457,21 @@ bool Game::showMenu(SDL_Renderer* renderer) {
 bool Game::showAboutScreen(SDL_Renderer* renderer) {
     bool inAbout = true;
 
-    // Load texture với kiểm tra NULL
+    // Load texture voi kiem tra NULL
     SDL_Texture* background = TextureLoader::loadTexture(renderer, "menu_background.png");
     SDL_Texture* backButton = TextureLoader::loadTexture(renderer, "back_button.png");
     SDL_Texture* backButtonHover = TextureLoader::loadTexture(renderer, "back03.png");
 
-    // Kiểm tra load texture
+    // Kiem tra load texture
     if (!background || !backButton) {
-        std::cout << "Lỗi load texture: menu_background.png hoặc back_button.png\n";
+        std::cout << "Loi load texture: menu_background.png hoac back_button.png\n";
         return false;
     }
 
-    // Tạo overlay
+    // Tao overlay
     SDL_Texture* overlay = SDL_CreateTexture(renderer, SDL_PIXELFORMAT_RGBA8888, SDL_TEXTUREACCESS_TARGET, 800, 600);
     if (!overlay) {
-        std::cout << "Lỗi tạo overlay texture\n";
+        std::cout << "Loi tao overlay texture\n";
         SDL_DestroyTexture(background);
         SDL_DestroyTexture(backButton);
         return false;
@@ -527,7 +529,7 @@ bool Game::showAboutScreen(SDL_Renderer* renderer) {
         SDL_RenderPresent(renderer);
     }
 
-    // Dọn dẹp
+    // Don dep
     SDL_DestroyTexture(background);
     SDL_DestroyTexture(overlay);
     SDL_DestroyTexture(backButton);
@@ -535,7 +537,7 @@ bool Game::showAboutScreen(SDL_Renderer* renderer) {
 }
 
 void Game::renderText(SDL_Renderer* renderer, const std::string& text, int x, int y, int fontSize) {
-    // Khởi tạo SDL_ttf
+    // Khoi tao SDL_ttf
     if (TTF_WasInit() == 0) {
         if (TTF_Init() == -1) {
             std::cout << "SDL_ttf Init Error: " << TTF_GetError() << "\n";
@@ -543,15 +545,15 @@ void Game::renderText(SDL_Renderer* renderer, const std::string& text, int x, in
         }
     }
 
-    // Mở font
+    // Mo font
     TTF_Font* font = TTF_OpenFont("Data/Font/ThaleahFat.ttf", fontSize);
     if (!font) {
         std::cout << "Failed to load font: " << TTF_GetError() << "\n";
         return;
     }
 
-    // Tạo texture từ text
-    SDL_Color color = { 0, 0, 0 }; // Màu đen
+    // Tao texture tu text
+    SDL_Color color = { 0, 0, 0 }; // Mau den
     SDL_Surface* textSurface = TTF_RenderText_Blended(font, text.c_str(), color);
     if (!textSurface) {
         std::cout << "Text Surface Error: " << TTF_GetError() << "\n";
@@ -567,13 +569,13 @@ void Game::renderText(SDL_Renderer* renderer, const std::string& text, int x, in
         return;
     }
 
-    // Xác định vị trí hiển thị
+    // Xac dinh vi tri hien thi
     SDL_Rect renderQuad = { x, y, textSurface->w, textSurface->h };
 
-    // Vẽ lên renderer
+    // Ve len renderer
     SDL_RenderCopy(renderer, textTexture, nullptr, &renderQuad);
 
-    // Giải phóng bộ nhớ
+    // Giai phong bo nho
     SDL_FreeSurface(textSurface);
     SDL_DestroyTexture(textTexture);
     TTF_CloseFont(font);
@@ -629,7 +631,7 @@ void Game::showGameOverMenu(SDL_Renderer* renderer) {
             }
         }
 
-        // Vẽ lại khung cảnh gameplay thay vì xóa màn hình
+        // Ve lai khung canh gameplay thay vi xoa man hinh
         level.draw(renderer, tileSize, cameraPos.x, cameraPos.y);
         for (auto& unitSelected : listUnits)
             if (unitSelected != nullptr)
@@ -644,7 +646,7 @@ void Game::showGameOverMenu(SDL_Renderer* renderer) {
         for (auto& coin : coins)
             coin->draw(renderer, tileSize, cameraPos);
 
-        // Vẽ menu Game Over lên trên
+        // Ve menu Game Over len tren
         SDL_RenderCopy(renderer, menuBackground, nullptr, &menuRect);
         renderText(renderer, "YOU LOST!", windowWidth / 2 - 50, windowHeight / 2 - 80, 30);
         SDL_RenderCopy(renderer, isRestart ? restartHoverTexture : restartTexture, nullptr, &retryButton);
@@ -677,7 +679,7 @@ void Game::showVictoryMenu(SDL_Renderer* renderer) {
     bool selecting = true;
     SDL_Event event;
 
-    SDL_Texture* victoryBackground = TextureLoader::loadTexture(renderer, "cut_frame_fixed.png"); // Giả định có file ảnh
+    SDL_Texture* victoryBackground = TextureLoader::loadTexture(renderer, "cut_frame_fixed.png"); // Gia dinh co file anh
     SDL_Texture* menuButton = TextureLoader::loadTexture(renderer, "back_button.png");
     SDL_Texture* menuButtonHover = TextureLoader::loadTexture(renderer, "back03.png");
 
@@ -699,7 +701,7 @@ void Game::showVictoryMenu(SDL_Renderer* renderer) {
                 case SDL_MOUSEBUTTONDOWN:
                     if (isMenuHover) {
                         AudioManager::playSound("Data/Sound/press_button.mp3");
-                        restartGame(); // Reset game trước khi về menu
+                        restartGame(); // Reset game truoc khi ve menu
                         if (showMenu(renderer)) {
                             gameState = GameState::Gameplay;
                         } else {
@@ -711,7 +713,7 @@ void Game::showVictoryMenu(SDL_Renderer* renderer) {
             }
         }
 
-        // Ve lai khung cảnh gameplay làm nền
+        // Ve lai khung canh gameplay lam nen
         level.draw(renderer, tileSize, cameraPos.x, cameraPos.y);
         for (auto& unitSelected : listUnits)
             if (unitSelected != nullptr)
@@ -726,7 +728,7 @@ void Game::showVictoryMenu(SDL_Renderer* renderer) {
         for (auto& coin : coins)
             coin->draw(renderer, tileSize, cameraPos);
 
-        // Vẽ khung Victory
+        // Ve khung Victory
         SDL_RenderCopy(renderer, victoryBackground, nullptr, &victoryRect);
         renderText(renderer, "Map 1 cleared!", windowWidth / 2 - 80, windowHeight / 2 - 80, 30);
         renderText(renderer, "New map is updating...", windowWidth / 2 - 80, windowHeight / 2 - 50, 20);
@@ -744,7 +746,7 @@ void Game::showPauseMenu(SDL_Renderer* renderer) {
     bool paused = true;
     SDL_Event event;
 
-    SDL_Texture* pauseBackground = TextureLoader::loadTexture(renderer, "cut_frame_fixed.png"); // Giả định file ảnh
+    SDL_Texture* pauseBackground = TextureLoader::loadTexture(renderer, "cut_frame_fixed.png"); // Gia dinh file anh
     SDL_Texture* resumeButton = TextureLoader::loadTexture(renderer, "back_button.png");
     SDL_Texture* resumeButtonHover = TextureLoader::loadTexture(renderer, "back03.png");
 
@@ -766,14 +768,14 @@ void Game::showPauseMenu(SDL_Renderer* renderer) {
                 case SDL_MOUSEBUTTONDOWN:
                     if (isResumeHover) {
                         AudioManager::playSound("Data/Sound/press_button.mp3");
-                        gameState = GameState::Gameplay; // Tiếp tục game
+                        gameState = GameState::Gameplay; // Tiep tuc game
                         paused = false;
                     }
                     break;
             }
         }
 
-        // Vẽ lại khung cảnh gameplay làm nền
+        // Ve lai khung canh gameplay lam nen
         level.draw(renderer, tileSize, cameraPos.x, cameraPos.y);
         for (auto& unitSelected : listUnits)
             if (unitSelected != nullptr)
@@ -788,7 +790,7 @@ void Game::showPauseMenu(SDL_Renderer* renderer) {
         for (auto& coin : coins)
             coin->draw(renderer, tileSize, cameraPos);
 
-        // Vẽ khung Pause
+        // Ve khung Pause
         SDL_RenderCopy(renderer, pauseBackground, nullptr, &pauseRect);
         renderText(renderer, "Game Paused", windowWidth / 2 - 75, windowHeight / 2 - 70, 30);
         SDL_RenderCopy(renderer, isResumeHover ? resumeButtonHover : resumeButton, nullptr, &resumeRect);
