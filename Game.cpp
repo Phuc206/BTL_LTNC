@@ -64,12 +64,28 @@ void Game::processEvents(SDL_Renderer* renderer, bool& running) {
             break;
         }
 
+        // <<< MỚI THÊM >>>
+        // Không xử lý input game nếu đang ở Shop
+        if (gameState == GameState::Shop) {
+            continue;
+        }
+
         // Goi handleInput cua HUD de xu ly thanh truot am luong
         if (hud->handleInput(event, this)) {
             continue; // Neu dang keo slider, khong xu ly input khac
         }
 
         const Uint8* keyState = SDL_GetKeyboardState(NULL);
+
+        // <<< MỚI THÊM >>>
+        // Nhấn 'B' để mở Shop
+        if (keyState[SDL_SCANCODE_B]) {
+            if (gameState == GameState::Gameplay) { // Chỉ mở shop khi đang chơi
+                setState(GameState::Shop); // Chuyển trạng thái sang Shop
+                continue; // Dừng xử lý input khác
+            }
+        }
+
         // Ki nang Lua (Q)
         if (keyState[SDL_SCANCODE_Q]) {
             if (hud->skills[0].ready() && player->currentMP >= 10) {
@@ -166,6 +182,12 @@ void Game::update(SDL_Renderer* renderer, float dT, Level& level) {
 
         case GameState::Paused:
             showPauseMenu(renderer); // Hien thi Pause Menu
+            break;
+
+        // <<< MỚI THÊM >>>
+        // Thêm case cho Shop
+        case GameState::Shop:
+            showShopMenu(renderer); // Gọi hàm hiển thị shop
             break;
 
         case GameState::Quit:
@@ -801,4 +823,136 @@ void Game::showPauseMenu(SDL_Renderer* renderer) {
     SDL_DestroyTexture(pauseBackground);
     SDL_DestroyTexture(resumeButton);
     SDL_DestroyTexture(resumeButtonHover);
+}
+
+
+// <<< MỚI THÊM >>>
+// Định nghĩa hàm showShopMenu
+void Game::showShopMenu(SDL_Renderer* renderer) {
+    bool inShop = true;
+    SDL_Event event;
+
+    // --- Tải tài nguyên cho Shop ---
+    // !!! BẠN CẦN THAY THẾ BẰNG TÊN FILE HÌNH ẢNH CỦA BẠN !!!
+    SDL_Texture* shopBackground = TextureLoader::loadTexture(renderer, "cut_frame_fixed.png"); // Tận dụng ảnh cũ
+    SDL_Texture* itemSwordIcon = TextureLoader::loadTexture(renderer, "Fire.jpg"); // !!! THAY THẾ ICON KIẾM
+    SDL_Texture* itemPotionIcon = TextureLoader::loadTexture(renderer, "Ice.jpg"); // !!! THAY THẾ ICON POTION
+    SDL_Texture* buyButtonTexture = TextureLoader::loadTexture(renderer, "play_button.png"); // Tận dụng ảnh cũ
+    SDL_Texture* exitButtonTexture = TextureLoader::loadTexture(renderer, "back_button.png"); // Tận dụng ảnh cũ
+    SDL_Texture* exitButtonHoverTexture = TextureLoader::loadTexture(renderer, "back03.png"); // Tận dụng ảnh cũ
+
+    // --- Định vị các nút và vật phẩm ---
+    // Tọa độ trung tâm
+    int centerX = windowWidth / 2;
+    int centerY = windowHeight / 2;
+
+    SDL_Rect shopRect = { centerX - 250, centerY - 150, 500, 300 }; // Khung shop
+
+    // Vật phẩm 1 (Tăng ATK)
+    SDL_Rect item1Rect = { shopRect.x + 30, shopRect.y + 50, 64, 64 };
+    SDL_Rect buyItem1Rect = { item1Rect.x + 180, item1Rect.y + 10, 100, 40 };
+    int item1Price = 10; // Giá vật phẩm 1
+
+    // Vật phẩm 2 (Tăng HP)
+    SDL_Rect item2Rect = { shopRect.x + 30, shopRect.y + 150, 64, 64 };
+    SDL_Rect buyItem2Rect = { item2Rect.x + 180, item2Rect.y + 10, 100, 40 };
+    int item2Price = 20; // Giá vật phẩm 2
+
+    // Nút thoát
+    SDL_Rect exitRect = { shopRect.x + shopRect.w - 60, shopRect.y + 10, 50, 50 };
+
+    while (inShop) {
+        int mouseX, mouseY;
+        SDL_GetMouseState(&mouseX, &mouseY);
+
+        // --- Kiểm tra hover ---
+        bool isHoverBuy1 = (mouseX >= buyItem1Rect.x && mouseX <= buyItem1Rect.x + buyItem1Rect.w &&
+                            mouseY >= buyItem1Rect.y && mouseY <= buyItem1Rect.y + buyItem1Rect.h);
+        bool isHoverBuy2 = (mouseX >= buyItem2Rect.x && mouseX <= buyItem2Rect.x + buyItem2Rect.w &&
+                            mouseY >= buyItem2Rect.y && mouseY <= buyItem2Rect.y + buyItem2Rect.h);
+        bool isHoverExit = (mouseX >= exitRect.x && mouseX <= exitRect.x + exitRect.w &&
+                            mouseY >= exitRect.y && mouseY <= exitRect.y + exitRect.h);
+
+        while (SDL_PollEvent(&event)) {
+            if (event.type == SDL_QUIT) {
+                gameState = GameState::Quit;
+                inShop = false;
+            } else if (event.type == SDL_MOUSEBUTTONDOWN) {
+                // --- Xử lý click ---
+                if (isHoverExit) { // Click nút thoát
+                    AudioManager::playSound("Data/Sound/press_button.mp3");
+                    inShop = false;
+                    gameState = GameState::Gameplay; // Quay lại game
+                }
+                else if (isHoverBuy1) { // Click mua item 1
+                    if (player->coin >= item1Price) {
+                        AudioManager::playSound("Data/Sound/coin_pickup.mp3"); // Âm thanh mua đồ
+                        player->coin -= item1Price; // Trừ tiền
+                        player->attackDamage += 5;  // Tăng sát thương
+                        std::cout << "Da mua Item 1! Sat thuong moi: " << player->attackDamage << "\n";
+                    } else {
+                        AudioManager::playSound("Data/Sound/monster_die.mp3"); // Âm thanh không đủ tiền
+                        std::cout << "Khong du tien!\n";
+                    }
+                }
+                else if (isHoverBuy2) { // Click mua item 2
+                    if (player->coin >= item2Price) {
+                        AudioManager::playSound("Data/Sound/coin_pickup.mp3");
+                        player->coin -= item2Price;
+                        player->maxHP += 20;  // Tăng máu tối đa
+                        player->currentHP += 20; // Hồi máu luôn
+                        std::cout << "Da mua Item 2! Mau toi da moi: " << player->maxHP << "\n";
+                    } else {
+                        AudioManager::playSound("Data/Sound/monster_die.mp3");
+                        std::cout << "Khong du tien!\n";
+                    }
+                }
+            } else if (event.type == SDL_KEYDOWN) {
+                if (event.key.keysym.sym == SDLK_ESCAPE) { // Thoát shop bằng ESC
+                    inShop = false;
+                    gameState = GameState::Gameplay;
+                }
+            }
+        }
+
+        // --- Vẽ ---
+        // 1. Vẽ lại màn hình game (để làm nền)
+        level.draw(renderer, tileSize, cameraPos.x, cameraPos.y);
+        for (auto& unitSelected : listUnits) if (unitSelected) unitSelected->draw(renderer, tileSize, cameraPos);
+        player->draw(renderer, tileSize, cameraPos);
+        hud->draw(renderer);
+
+        // 2. Vẽ giao diện shop đè lên
+        SDL_RenderCopy(renderer, shopBackground, nullptr, &shopRect);
+        renderText(renderer, "SHOP (Nhan B hoac ESC de dong)", shopRect.x + 100, shopRect.y + 20, 20);
+
+        // 3. Vẽ thông tin tiền
+        std::string coinText = "Coins: " + std::to_string(player->coin);
+        renderText(renderer, coinText.c_str(), shopRect.x + 350, shopRect.y + 20, 20);
+
+        // 4. Vẽ vật phẩm 1
+        SDL_RenderCopy(renderer, itemSwordIcon, nullptr, &item1Rect);
+        renderText(renderer, "Sword (+5 ATK)", item1Rect.x, item1Rect.y + 70, 16);
+        renderText(renderer, "Gia: " + std::to_string(item1Price), item1Rect.x, item1Rect.y + 90, 16);
+        SDL_RenderCopy(renderer, buyButtonTexture, nullptr, &buyItem1Rect);
+
+        // 5. Vẽ vật phẩm 2
+        SDL_RenderCopy(renderer, itemPotionIcon, nullptr, &item2Rect);
+        renderText(renderer, "HP Up (+20 MaxHP)", item2Rect.x, item2Rect.y + 70, 16);
+        renderText(renderer, "Gia: " + std::to_string(item2Price), item2Rect.x, item2Rect.y + 90, 16);
+        SDL_RenderCopy(renderer, buyButtonTexture, nullptr, &buyItem2Rect);
+
+        // 6. Vẽ nút thoát
+        SDL_RenderCopy(renderer, isHoverExit ? exitButtonHoverTexture : exitButtonTexture, nullptr, &exitRect);
+
+        SDL_RenderPresent(renderer);
+    }
+
+    // --- Hủy tài nguyên ---
+    SDL_DestroyTexture(shopBackground);
+    SDL_DestroyTexture(itemSwordIcon);
+    SDL_DestroyTexture(itemPotionIcon);
+    SDL_DestroyTexture(buyButtonTexture);
+    SDL_DestroyTexture(exitButtonTexture);
+    SDL_DestroyTexture(exitButtonHoverTexture);
 }
