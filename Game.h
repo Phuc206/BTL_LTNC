@@ -21,8 +21,6 @@ class Player;
 class Projectile;
 class Unit;
 
-// <<< MỚI THÊM >>>
-// Thêm trạng thái "Shop" vào GameState
 enum class GameState { Menu, Gameplay, GameOver, Quit, Victory, Paused, Shop };
 
 class Game {
@@ -50,8 +48,6 @@ public:
     void restartGame();
     void showPauseMenu(SDL_Renderer* renderer);
 
-    // <<< MỚI THÊM >>>
-    // Khai báo hàm hiển thị Shop
     void showShopMenu(SDL_Renderer* renderer);
 
     GameState getState() const { return gameState; }

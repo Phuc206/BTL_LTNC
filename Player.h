@@ -44,6 +44,9 @@ public:
     void removeHealth(int damage);
 
     void increaseHealth();
+    void increaseMana(float amount);
+    void upgradeHP(int amount);
+    void upgradeDamage(int amount);
 
     int attackDamage = 10;
     int maxHP = 100;

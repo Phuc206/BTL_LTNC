@@ -187,7 +187,7 @@ void Game::update(SDL_Renderer* renderer, float dT, Level& level) {
         // <<< MỚI THÊM >>>
         // Thêm case cho Shop
         case GameState::Shop:
-            showShopMenu(renderer); // Gọi hàm hiển thị shop
+            showShopMenu(renderer); // Goi hàm hien thi shop
             break;
 
         case GameState::Quit:
@@ -825,134 +825,137 @@ void Game::showPauseMenu(SDL_Renderer* renderer) {
     SDL_DestroyTexture(resumeButtonHover);
 }
 
-
-// <<< MỚI THÊM >>>
-// Định nghĩa hàm showShopMenu
 void Game::showShopMenu(SDL_Renderer* renderer) {
     bool inShop = true;
     SDL_Event event;
 
-    // --- Tải tài nguyên cho Shop ---
-    // !!! BẠN CẦN THAY THẾ BẰNG TÊN FILE HÌNH ẢNH CỦA BẠN !!!
-    SDL_Texture* shopBackground = TextureLoader::loadTexture(renderer, "cut_frame_fixed.png"); // Tận dụng ảnh cũ
-    SDL_Texture* itemSwordIcon = TextureLoader::loadTexture(renderer, "Fire.jpg"); // !!! THAY THẾ ICON KIẾM
-    SDL_Texture* itemPotionIcon = TextureLoader::loadTexture(renderer, "Ice.jpg"); // !!! THAY THẾ ICON POTION
-    SDL_Texture* buyButtonTexture = TextureLoader::loadTexture(renderer, "play_button.png"); // Tận dụng ảnh cũ
-    SDL_Texture* exitButtonTexture = TextureLoader::loadTexture(renderer, "back_button.png"); // Tận dụng ảnh cũ
-    SDL_Texture* exitButtonHoverTexture = TextureLoader::loadTexture(renderer, "back03.png"); // Tận dụng ảnh cũ
+    // Tai tai nguyen cho Shop
+    SDL_Texture* shopBackground = TextureLoader::loadTexture(renderer, "cut_frame_fixed.png");
+    SDL_Texture* buyButtonTexture = TextureLoader::loadTexture(renderer, "buy01.png");
+    SDL_Texture* buyButtonHoverTexture = TextureLoader::loadTexture(renderer, "buy03.png");
+    SDL_Texture* exitButtonTexture = TextureLoader::loadTexture(renderer, "back_button.png");
+    SDL_Texture* exitButtonHoverTexture = TextureLoader::loadTexture(renderer, "back03.png");
 
-    // --- Định vị các nút và vật phẩm ---
-    // Tọa độ trung tâm
+    // Dinh vi cac nut va vat pham
     int centerX = windowWidth / 2;
     int centerY = windowHeight / 2;
 
-    SDL_Rect shopRect = { centerX - 250, centerY - 150, 500, 300 }; // Khung shop
+    SDL_Rect shopRect = { centerX - 250, centerY - 150, 500, 300 };
 
-    // Vật phẩm 1 (Tăng ATK)
-    SDL_Rect item1Rect = { shopRect.x + 30, shopRect.y + 50, 64, 64 };
-    SDL_Rect buyItem1Rect = { item1Rect.x + 180, item1Rect.y + 10, 100, 40 };
-    int item1Price = 10; // Giá vật phẩm 1
+    // Item 1 (HP): Vị trí va kich thuoc item container
+    SDL_Rect item1Rect = { shopRect.x + 30, shopRect.y + 100, 440, 40 };
+    // Nut BUY 1
+    SDL_Rect buyItem1Rect = { item1Rect.x + 350, item1Rect.y, 80, 40 };
 
-    // Vật phẩm 2 (Tăng HP)
-    SDL_Rect item2Rect = { shopRect.x + 30, shopRect.y + 150, 64, 64 };
-    SDL_Rect buyItem2Rect = { item2Rect.x + 180, item2Rect.y + 10, 100, 40 };
-    int item2Price = 20; // Giá vật phẩm 2
+    // Item 2 (ATK): Vị trí va kich thuoc item container
+    SDL_Rect item2Rect = { shopRect.x + 30, shopRect.y + 180, 440, 40 };
+    // Nut BUY 2
+    SDL_Rect buyItem2Rect = { item2Rect.x + 350, item2Rect.y, 80, 40 };
 
-    // Nút thoát
-    SDL_Rect exitRect = { shopRect.x + shopRect.w - 60, shopRect.y + 10, 50, 50 };
+    // Nut BACK
+    SDL_Rect backRect = { shopRect.x + shopRect.w - 110, shopRect.y + shopRect.h - 50, 100, 40 };
+
+    int item1Price = 10;
+    int item2Price = 15;
+
+    // Ve lop phu nen mo
+    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 180);
+    SDL_RenderFillRect(renderer, nullptr);
 
     while (inShop) {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
 
-        // --- Kiểm tra hover ---
+        // Kiem tra hover
+        bool isHoverBack = (mouseX >= backRect.x && mouseX <= backRect.x + backRect.w &&
+                            mouseY >= backRect.y && mouseY <= backRect.y + backRect.h);
+
         bool isHoverBuy1 = (mouseX >= buyItem1Rect.x && mouseX <= buyItem1Rect.x + buyItem1Rect.w &&
                             mouseY >= buyItem1Rect.y && mouseY <= buyItem1Rect.y + buyItem1Rect.h);
+
         bool isHoverBuy2 = (mouseX >= buyItem2Rect.x && mouseX <= buyItem2Rect.x + buyItem2Rect.w &&
                             mouseY >= buyItem2Rect.y && mouseY <= buyItem2Rect.y + buyItem2Rect.h);
-        bool isHoverExit = (mouseX >= exitRect.x && mouseX <= exitRect.x + exitRect.w &&
-                            mouseY >= exitRect.y && mouseY <= exitRect.y + exitRect.h);
+
 
         while (SDL_PollEvent(&event)) {
             if (event.type == SDL_QUIT) {
                 gameState = GameState::Quit;
                 inShop = false;
+                break;
             } else if (event.type == SDL_MOUSEBUTTONDOWN) {
-                // --- Xử lý click ---
-                if (isHoverExit) { // Click nút thoát
+                // Xu ly click nut BACK
+                if (isHoverBack) {
                     AudioManager::playSound("Data/Sound/press_button.mp3");
+                    gameState = GameState::Menu;
                     inShop = false;
-                    gameState = GameState::Gameplay; // Quay lại game
+                    break;
                 }
-                else if (isHoverBuy1) { // Click mua item 1
-                    if (player->coin >= item1Price) {
-                        AudioManager::playSound("Data/Sound/coin_pickup.mp3"); // Âm thanh mua đồ
-                        player->coin -= item1Price; // Trừ tiền
-                        player->attackDamage += 5;  // Tăng sát thương
-                        std::cout << "Da mua Item 1! Sat thuong moi: " << player->attackDamage << "\n";
-                    } else {
-                        AudioManager::playSound("Data/Sound/monster_die.mp3"); // Âm thanh không đủ tiền
-                        std::cout << "Khong du tien!\n";
-                    }
-                }
-                else if (isHoverBuy2) { // Click mua item 2
-                    if (player->coin >= item2Price) {
+
+                // Logic mua Nang cap HP (Item 1)
+                if (isHoverBuy1) {
+                    if (player->getCoins() >= item1Price) {
+                        player->upgradeHP(20);
+                        player->coin -= item1Price;
                         AudioManager::playSound("Data/Sound/coin_pickup.mp3");
-                        player->coin -= item2Price;
-                        player->maxHP += 20;  // Tăng máu tối đa
-                        player->currentHP += 20; // Hồi máu luôn
-                        std::cout << "Da mua Item 2! Mau toi da moi: " << player->maxHP << "\n";
                     } else {
-                        AudioManager::playSound("Data/Sound/monster_die.mp3");
-                        std::cout << "Khong du tien!\n";
+                        AudioManager::playSound("Data/Sound/warning.mp3");
                     }
                 }
-            } else if (event.type == SDL_KEYDOWN) {
-                if (event.key.keysym.sym == SDLK_ESCAPE) { // Thoát shop bằng ESC
-                    inShop = false;
-                    gameState = GameState::Gameplay;
+
+                // Logic mua Nang cap Sat thuong (Item 2)
+                if (isHoverBuy2) {
+                    if (player->getCoins() >= item2Price) {
+                        player->upgradeDamage(5);
+                        player->coin -= item2Price;
+                        AudioManager::playSound("Data/Sound/coin_pickup.mp3");
+                    } else {
+                        AudioManager::playSound("Data/Sound/warning.mp3");
+                    }
                 }
             }
         }
 
-        // --- Vẽ ---
-        // 1. Vẽ lại màn hình game (để làm nền)
-        level.draw(renderer, tileSize, cameraPos.x, cameraPos.y);
-        for (auto& unitSelected : listUnits) if (unitSelected) unitSelected->draw(renderer, tileSize, cameraPos);
-        player->draw(renderer, tileSize, cameraPos);
-        hud->draw(renderer);
-
-        // 2. Vẽ giao diện shop đè lên
+        // Ve khung nen shop
         SDL_RenderCopy(renderer, shopBackground, nullptr, &shopRect);
-        renderText(renderer, "SHOP (Nhan B hoac ESC de dong)", shopRect.x + 100, shopRect.y + 20, 20);
 
-        // 3. Vẽ thông tin tiền
-        std::string coinText = "Coins: " + std::to_string(player->coin);
-        renderText(renderer, coinText.c_str(), shopRect.x + 350, shopRect.y + 20, 20);
+        // Tieu de
+        renderText(renderer, "THE ARMORY SHOP", shopRect.x + 100, shopRect.y + 20, 32);
 
-        // 4. Vẽ vật phẩm 1
-        SDL_RenderCopy(renderer, itemSwordIcon, nullptr, &item1Rect);
-        renderText(renderer, "Sword (+5 ATK)", item1Rect.x, item1Rect.y + 70, 16);
-        renderText(renderer, "Gia: " + std::to_string(item1Price), item1Rect.x, item1Rect.y + 90, 16);
-        SDL_RenderCopy(renderer, buyButtonTexture, nullptr, &buyItem1Rect);
+        // Coins hien tai
+        renderText(renderer, "COINS:", shopRect.x + 20, shopRect.y + 60, 20);
+        renderText(renderer, std::to_string(player->getCoins()), shopRect.x + 100, shopRect.y + 60, 20);
 
-        // 5. Vẽ vật phẩm 2
-        SDL_RenderCopy(renderer, itemPotionIcon, nullptr, &item2Rect);
-        renderText(renderer, "HP Up (+20 MaxHP)", item2Rect.x, item2Rect.y + 70, 16);
-        renderText(renderer, "Gia: " + std::to_string(item2Price), item2Rect.x, item2Rect.y + 90, 16);
-        SDL_RenderCopy(renderer, buyButtonTexture, nullptr, &buyItem2Rect);
+        // ITEM 1: HP
+        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+        SDL_RenderFillRect(renderer, &item1Rect);
+        renderText(renderer, "MAX HP UPGRADE (+20)", item1Rect.x + 5, item1Rect.y + 5, 18);
+        renderText(renderer, "COST: 10", item1Rect.x + 5, item1Rect.y + 25, 18);
 
-        // 6. Vẽ nút thoát
-        SDL_RenderCopy(renderer, isHoverExit ? exitButtonHoverTexture : exitButtonTexture, nullptr, &exitRect);
+        // Nut BUY 1
+        SDL_RenderCopy(renderer, isHoverBuy1 ? buyButtonHoverTexture : buyButtonTexture, nullptr, &buyItem1Rect);
+        renderText(renderer, "", buyItem1Rect.x + 25, buyItem1Rect.y + 10, 18);
+
+        // ITEM 2: DAMAGE
+        SDL_SetRenderDrawColor(renderer, 50, 50, 50, 255);
+        SDL_RenderFillRect(renderer, &item2Rect);
+        renderText(renderer, "ATTACK DAMAGE (+5)", item2Rect.x + 5, item2Rect.y + 5, 18);
+        renderText(renderer, "COST: 15", item2Rect.x + 5, item2Rect.y + 25, 18);
+
+        // Nut BUY 2
+        SDL_RenderCopy(renderer, isHoverBuy2 ? buyButtonHoverTexture : buyButtonTexture, nullptr, &buyItem2Rect);
+        renderText(renderer, "", buyItem2Rect.x + 25, buyItem2Rect.y + 10, 18);
+
+        // Nut BACK
+        SDL_RenderCopy(renderer, isHoverBack ? exitButtonHoverTexture : exitButtonTexture, nullptr, &backRect);
+        renderText(renderer, "", backRect.x + 25, backRect.y + 10, 18);
 
         SDL_RenderPresent(renderer);
     }
 
-    // --- Hủy tài nguyên ---
+    // Huy tai nguyen
     SDL_DestroyTexture(shopBackground);
-    SDL_DestroyTexture(itemSwordIcon);
-    SDL_DestroyTexture(itemPotionIcon);
     SDL_DestroyTexture(buyButtonTexture);
+    SDL_DestroyTexture(buyButtonHoverTexture);
     SDL_DestroyTexture(exitButtonTexture);
     SDL_DestroyTexture(exitButtonHoverTexture);
 }

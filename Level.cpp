@@ -308,7 +308,8 @@ void Level::checkPotionPickup(Vector2D characterPosition, Player* player) {
                 AudioManager::playSound("Data/Sound/heal.wav");
                 Mix_VolumeChunk(AudioManager::getSound("Data/Sound/heal.wav"), 50);
             } else if (potionTextures[index] == potionManaTexture) {
-                player->currentMP = player->maxMP; // Hoi phuc mana
+                //player->currentMP = player->maxMP; // Hoi phuc mana
+                player->increaseMana(50.0f);
                 AudioManager::playSound("Data/Sound/levelup.wav");
                 Mix_VolumeChunk(AudioManager::getSound("Data/Sound/levelup.wav"), 50);
             }

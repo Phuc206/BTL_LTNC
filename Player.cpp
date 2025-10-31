@@ -309,6 +309,24 @@ void Player::increaseHealth() {
     currentHP = maxHP;
 }
 
+void Player::increaseMana(float amount) {
+    currentMP += amount;
+    if (currentMP > maxMP) {
+        currentMP = maxMP;
+    }
+}
+
+void Player::upgradeHP(int amount) {
+    maxHP += amount;
+    currentHP = maxHP; // Hồi đầy máu sau khi nâng cấp
+    std::cout << "HP Upgraded! Max HP: " << maxHP << "\n";
+}
+
+void Player::upgradeDamage(int amount) {
+    attackDamage += amount;
+    std::cout << "Damage Upgraded! Attack Damage: " << attackDamage << "\n";
+}
+
 void Player::levelUp() {
     level++;
     maxHP += 5;
@@ -328,7 +346,7 @@ void Player::reset() {
     damageCooldown.resetToMax();
     hurtTimer.resetToMax();
     deathTimer.resetToMax();
-    coin = 0;
+    // coin = 0;  Cho xu ve bang 0
     level = 1;
     attackDamage = 10; // Hoac gia tri mac dinh ban dau
 
