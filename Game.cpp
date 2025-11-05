@@ -858,10 +858,6 @@ void Game::showShopMenu(SDL_Renderer* renderer) {
     int item1Price = 10;
     int item2Price = 15;
 
-    // Ve lop phu nen mo
-    SDL_SetRenderDrawColor(renderer, 0, 0, 0, 180);
-    SDL_RenderFillRect(renderer, nullptr);
-
     while (inShop) {
         int mouseX, mouseY;
         SDL_GetMouseState(&mouseX, &mouseY);
@@ -886,7 +882,7 @@ void Game::showShopMenu(SDL_Renderer* renderer) {
                 // Xu ly click nut BACK
                 if (isHoverBack) {
                     AudioManager::playSound("Data/Sound/press_button.mp3");
-                    gameState = GameState::Menu;
+                    gameState = GameState::Gameplay;
                     inShop = false;
                     break;
                 }
