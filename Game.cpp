@@ -539,13 +539,16 @@ bool Game::showAboutScreen(SDL_Renderer* renderer) {
         renderText(renderer, "NOT YOUR OWN ADVENTURE!", 150, 130, 32);
         renderText(renderer, "Developed: LXP", 150, 180, 24);
         renderText(renderer, "You play as a lone adventurer,", 150, 220, 24);
-        renderText(renderer, "fighting enemies and surviving endless waves.", 150, 250, 24);
-        renderText(renderer, "Controls:", 150, 290, 24);
-        renderText(renderer, "- Move: Arrow Keys", 170, 320, 22);
-        renderText(renderer, "- Attack: K", 170, 345, 22);
-        renderText(renderer, "- Skill Q/E: Fire / Ice Attack", 170, 370, 22);
-        renderText(renderer, "- ESC: Pause or Back", 170, 395, 22);
-        renderText(renderer, "Press Back to return to the main menu", 150, 440, 22);
+        renderText(renderer, "fighting enemies and surviving endless waves.", 150, 240, 24);
+
+        renderText(renderer, "Features / Controls:", 150, 290, 24);
+        renderText(renderer, "- Open Shop: B (to upgrade HP/ATK)", 170, 320, 22); // DÒNG SHOP MỚI
+
+        renderText(renderer, "- Move: A-left, D-right, W-up, S-down ", 170, 340, 22);
+        renderText(renderer, "- Attack: K", 170, 360, 22); // Y+25
+        renderText(renderer, "- Skill Q/E: Fire / Ice Attack", 170, 380, 22); // Y+25
+
+        renderText(renderer, "Press Back to return to the main menu", 150, 430, 22);
 
         SDL_RenderCopy(renderer, isButtonHover ? backButtonHover : backButton, nullptr, &backRect);
         SDL_RenderPresent(renderer);

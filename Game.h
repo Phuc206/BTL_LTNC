@@ -47,7 +47,6 @@ public:
     void showVictoryMenu(SDL_Renderer* renderer); // Ham hien thi khung Victory
     void restartGame();
     void showPauseMenu(SDL_Renderer* renderer);
-
     void showShopMenu(SDL_Renderer* renderer);
 
     GameState getState() const { return gameState; }
